@@ -1,6 +1,6 @@
 # CoreColor
 
-<img align=top src="Assets/logo.png">
+<img align=center src="Assets/logo.png">
 
 Color modelling and conversion framework in Swift.
 
