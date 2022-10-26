@@ -8,8 +8,8 @@ Color modelling and conversion framework in Swift.
 
 ## License
 
-CoreColor is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).
+*CoreColor* is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).
 
 # Credits
 
-CoreColor is a project of [@yukonblue](https://github.com/yukonblue).
+*CoreColor* is a project of [@yukonblue](https://github.com/yukonblue).
