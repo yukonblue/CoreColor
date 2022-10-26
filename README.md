@@ -1,4 +1,4 @@
-<img align=center src="Assets/logo.png" width="52" height="52"> CoreColor
+<img align="center" src="Assets/logo.png" width="52" height="52"> CoreColor
 ======================================
 
 Color modelling and conversion framework in Swift.
@@ -10,6 +10,6 @@ Color modelling and conversion framework in Swift.
 
 *CoreColor* is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).
 
-# Credits
+## Credits
 
 *CoreColor* is a project of [@yukonblue](https://github.com/yukonblue).
