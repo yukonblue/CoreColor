@@ -1,6 +1,4 @@
-<a align="verticalcenter">
-	<img align="center" src="Assets/logo.png" width="52" height="52"> CoreColor
-</a>
+<img align="center" src="Assets/logo.png" width="52" height="52"> CoreColor
 ======================================
 
 Color modelling and conversion framework in Swift.
