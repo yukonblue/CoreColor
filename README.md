@@ -17,7 +17,7 @@ such as RGB, CMYK, HSL, HSV, LAB, and XYZ, as well as facilities
 for converting between any one of the color models to the other.
 
 
-## Example
+## Usage
 
 The interfaces of *CoreColor* are simple and intuitive to use. Here's an example
 to convert an instance of RGB color model in sRGB colorspace to the equivalent in
