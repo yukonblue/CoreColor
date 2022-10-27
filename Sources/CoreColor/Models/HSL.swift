@@ -82,7 +82,7 @@ public struct HSL: HueColor {
 
 public struct HSLColorSpace: ColorSpace {
 
-    public typealias ColorType = HSL
+    public typealias ColorModel = HSL
 
     public let name = "HSL"
 

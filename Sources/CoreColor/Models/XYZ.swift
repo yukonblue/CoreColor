@@ -58,7 +58,7 @@ public enum XYZColorSpaces {
 
 public struct XYZColorSpace: XYZColorSpaceRepresentable, ColorSpace {
 
-    public typealias ColorType = XYZ
+    public typealias ColorModel = XYZ
 
     public let whitePoint: WhitePoint
 
@@ -73,15 +73,15 @@ public struct XYZColorSpace: XYZColorSpaceRepresentable, ColorSpace {
 
 
 ///
-/// The CIEXYZ color model
+/// The CIEXYZ color model.
 ///
-/// [XYZ] is calculated relative to a [given][space] [whitePoint], which defaults to [Illuminant.D65].
+/// ``XYZ`` is calculated relative to a given white point, which defaults to D65.
 ///
 /// | Component  | Range       |
 /// | -------------- | -------------|
-/// | [x]              | `[0, 1]` |
-/// | [y]              | `[0, 1]` |
-/// | [z]              | `[0, 1]` |
+/// |  x               | `[0, 1]` |
+/// |  y               | `[0, 1]` |
+/// |  z               | `[0, 1]` |
 public struct XYZ: Color {
 
     public func toSRGB() -> RGB {

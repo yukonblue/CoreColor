@@ -9,7 +9,7 @@ import Foundation
 
 public struct LUVColorSpace: WhitePointColorSpace {
 
-    public typealias ColorType = LUV
+    public typealias ColorModel = LUV
 
     public let whitePoint: WhitePoint
 
@@ -38,13 +38,13 @@ enum LUVColorSpaces {
 /**
  * The CIE LUV color space, also referred to as `CIE 1976 L*u*v*`.
  *
- * [LUV] is calculated relative to a [given][space] [whitePoint], which defaults to [Illuminant.D65].
+ * ``LUV`` is calculated relative to a given white point, which defaults to D65.
  *
  * | Component  | Description  | Range         |
  * | ---------- | ------------ | ------------- |
- * | [l]        | lightness    | `[0, 100]`    |
- * | [u]        |              | `[-100, 100]` |
- * | [v]        |              | `[-100, 100]` |
+ * |  l         | lightness    | `[0, 100]`    |
+ * |  u         |              | `[-100, 100]` |
+ * |  v         |              | `[-100, 100]` |
  */
 public struct LUV: Color {
 

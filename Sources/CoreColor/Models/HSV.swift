@@ -56,7 +56,7 @@ public struct HSV: HueColor {
 
 public struct HSVColorSpace: ColorSpace {
 
-    public typealias ColorType = HSV
+    public typealias ColorModel = HSV
 
     public let name = "HSV"
     

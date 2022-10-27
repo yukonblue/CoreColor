@@ -14,7 +14,7 @@ protocol LABColorSpaceRepresentable: WhitePointColorSpace {
 
 public struct LABColorSpace: LABColorSpaceRepresentable {
 
-    public typealias ColorType = LAB
+    public typealias ColorModel = LAB
 
     public let whitePoint: WhitePoint
 
@@ -43,15 +43,15 @@ public enum LABColorSpaces {
 /**
  * CIE LAB color space, also referred to as `CIE 1976 L*a*b*`.
  *
- * The cylindrical representation of this space is [LCHab].
+ * The cylindrical representation of this space is LCHab.
  *
- * [LAB] is calculated relative to a [given][space] [whitePoint], which defaults to [Illuminant.D65].
+ * `LAB` is calculated relative to a given white point, which defaults to D65.
  *
  * | Component  | Description | Range         |
  * | ---------- | ----------- | ------------- |
- * | [l]        | lightness   | `[0, 100]`    |
- * | [a]        | green-red   | `[-100, 100]` |
- * | [b]        | blue-yellow | `[-100, 100]` |
+ * |  l         | lightness   | `[0, 100]`    |
+ * |  a         | green-red   | `[-100, 100]` |
+ * |  b         | blue-yellow | `[-100, 100]` |
  */
 public struct LAB: Color {
 

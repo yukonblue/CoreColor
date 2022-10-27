@@ -6,16 +6,16 @@
 //
 
 /**
- * A color in the CMYK (cyan, magenta, yellow, and key) color model.
+ * A color in the CMYK (cyan, magenta, yellow, and key/black) color model.
  *
  * Conversions to and from this model use the device-independent ("naive") formulas.
  *
  * | Component  | Description | Range    |
  * | ---------- | ----------- | -------- |
- * | [c]        | cyan        | `[0, 1]` |
- * | [m]        | magenta     | `[0, 1]` |
- * | [y]        | yellow      | `[0, 1]` |
- * | [k]        | key / black | `[0, 1]` |
+ * |  c         | cyan        | `[0, 1]` |
+ * |  m         | magenta     | `[0, 1]` |
+ * |  y         | yellow      | `[0, 1]` |
+ * |  k         | key / black | `[0, 1]` |
  */
 public struct CMYK: Color {
 
@@ -37,9 +37,10 @@ public struct CMYK: Color {
     }
 }
 
+/// CMYK color space.
 public struct CMYKColorSpace: ColorSpace {
 
-    public typealias ColorType = CMYK
+    public typealias ColorModel = CMYK
 
     public let name = "CMYK"
 

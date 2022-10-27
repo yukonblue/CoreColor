@@ -7,25 +7,27 @@
 
 import simd
 
+/// Abstraction of RGB color spaces.
 protocol RGBColorSpaceRepresentable: WhitePointColorSpace {
 
     ///
-    /// Transfer functions for the RGB colorspace.
+    /// Transfer functions for the RGB color space.
+    ///
     var transferFunctions: RGBTransferFunctions { get }
 
     ///
-    /// A 3×3 matrix that transforms linear-light values in this space to [XYZ] tristimulus values.
+    /// A 3×3 matrix that transforms linear-light values in this space to XYZ tristimulus values.
     ///
     var matrixToXyz: matrix_float3x3 { get }
 
     ///
-    /// A 3×3 matrix that transforms [XYZ] tristimulus values to linear-light values in this space.
+    /// A 3×3 matrix that transforms XYZ tristimulus values to linear-light values in this space.
     ///
     var matrixFromXyz: matrix_float3x3 { get }
 }
 
 ///
-/// Color Component Transfer Functions (CCTFs) for encoding and decoding components of [RGB] color spaces.
+/// Color Component Transfer Functions (CCTFs) for encoding and decoding components of ``RGB`` color spaces.
 ///
 protocol RGBTransferFunctions {
 

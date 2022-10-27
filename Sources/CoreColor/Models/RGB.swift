@@ -8,8 +8,7 @@
 import Foundation
 import simd
 
-/// The RGB color model, using the [sRGB][SRGB] color space by default.
-
+/// The RGB color model, using the sRGB color space by default.
 public struct RGB: Color {
 
     let r: Float
@@ -136,7 +135,7 @@ extension RGB {
     /// Call [block] with the hue, min of color channels, max of color channels, and the
     /// delta between min and max.
     ///
-    /// Min and max are scaled to [0, 1]
+    /// Min and max are scaled to [0, 1].
     ///
     func srgbHueMinMaxChroma<T>(_ block: (_ hue: Double, _ min: Double, _ max: Double, _ chroma: Double) -> T) -> T {
         let rD: Double = Double(self.r)
