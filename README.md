@@ -20,7 +20,7 @@ for converting between any one of the color models to the other.
 ## Usage
 
 The interfaces of *CoreColor* are simple and intuitive to use. Here's an example
-to convert an instance of RGB color model in sRGB colorspace to the equivalent in
+to convert an instance of RGB color model in sRGB color space to the equivalent
 CMYK model.
 
 ```swift
