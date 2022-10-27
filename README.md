@@ -24,8 +24,8 @@ The following color models are currently supported in this version:
 
 - RGB (various RGB colorspaces)
 - XYZ (CIE XYZ)
-- LUV (`CIE 1976 L*u*v*`)
-- LAB (`CIE 1976 L*a*b*`)
+- LUV (CIE 1976 `L*u*v*`)
+- LAB (CIE 1976 `L*a*b*`)
 - CMYK
 - HSV
 - HSL
