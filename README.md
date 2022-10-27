@@ -31,7 +31,7 @@ The following color models are currently supported in this version:
 
 ### RGB Color Space
 
-The following variations are currently supported in this version:
+The following variations of RGB color spaces are currently supported in this version:
 
 - sRGB
 - Linear sRGB
