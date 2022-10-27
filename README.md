@@ -40,7 +40,7 @@ print(cmyk) // CMYK(c: 0.3333334, m: 0.1666667, y: 0.0, k: 0.39999998, alpha: 1.
 
 The following color models are currently supported in this version:
 
-- RGB (various RGB colorspaces)
+- RGB (various RGB color spaces)
 - XYZ (CIE XYZ)
 - LUV (CIE 1976 `L*u*v*`)
 - LAB (CIE 1976 `L*a*b*`)
