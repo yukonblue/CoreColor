@@ -11,9 +11,10 @@ It is designed for a wide range of audience, including color enthusiasts,
 engineers, visual designers and artists, as well as those involved in
 scientific researches that rely on color modeling.
 
-*CoreColor* provides the modeling for a set of common color models and associated colorspaces,
-including those that many are familiar with, including RGB, CMYK, HSL, HSV, LAB, and XYZ,
-as well as facilities for converting between any one of the color models to the other.
+*CoreColor* provides the modeling for a variety of common color models
+and associated color spaces, including those that many are familiar with,
+such as RGB, CMYK, HSL, HSV, LAB, and XYZ, as well as facilities
+for converting between any one of the color models to the other.
 
 ## Details
 
