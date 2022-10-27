@@ -115,11 +115,6 @@ class RGBTests: ColorTestCase {
     }
 
     func test_sRGB_to_sRGB() throws {
-        let rgb = RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.sRGB)
-        print(rgb)
-
-        let cmyk = rgb.toCMYK()
-        print(cmyk)
         try check_RGB_to_sRGB(src: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
                               dst: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB))
 
