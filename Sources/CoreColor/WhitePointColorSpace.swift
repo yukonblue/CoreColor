@@ -5,6 +5,7 @@
 //  Created by yukonblue on 10/25/2022.
 //
 
+/// Abstraction of color spaces that are based on the relative white point.
 public protocol WhitePointColorSpace: ColorSpace {
 
     /// The white point that colors in this space are calculated relative to.

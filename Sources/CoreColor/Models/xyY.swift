@@ -5,6 +5,7 @@
 //  Created by yukonblue on 10/14/2022.
 //
 
+/// Representation of CIE chromaticity.
 public struct xyY: Equatable {
 
     let x: Float

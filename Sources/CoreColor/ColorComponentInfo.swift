@@ -5,12 +5,14 @@
 //  Created by yukonblue on 10/25/2022.
 //
 
+/// An abstraction that encapsulates relevant information about
+/// individual color components of a color space.
 public struct ColorComponentInfo: Equatable {
 
     /// The name of this component.
     let name: String
 
-    /// `true` if this component uses polar coordinates (e.g. a hue),
+    /// Returns `true` if this component uses polar coordinates (e.g. a hue),
     /// and `false` if it's rectangular.
     let isPolar: Bool
 }

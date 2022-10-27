@@ -13,7 +13,8 @@ fileprivate let SRGB_G = xyY(x: 0.3000, y: 0.6000)
 
 fileprivate let SRGB_B = xyY(x: 0.1500, y: 0.0600)
 
-enum RGBColorSpaces {
+/// Set of pre-defined RGB color spaces.
+public enum RGBColorSpaces {
 
     ///
     /// sRGB color space
@@ -82,6 +83,7 @@ enum RGBColorSpaces {
     )
 }
 
+/// RGB color space.
 public struct RGBColorSpace: RGBColorSpaceRepresentable {
 
     public func convert<T>(from srcColor: T) -> RGB where T : Color {
@@ -91,7 +93,7 @@ public struct RGBColorSpace: RGBColorSpaceRepresentable {
         return srcColor.toXYZ().to(rgbSpace: self)
     }
 
-    public typealias ColorType = RGB
+    public typealias ColorModel = RGB
 
     init(name: String, whitePoint: WhitePoint, transferFunctions: RGBTransferFunctions, r: xyY, g: xyY, b: xyY) {
         self.name = name
