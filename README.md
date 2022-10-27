@@ -1,4 +1,4 @@
-## Color modelling and conversion framework in Swift
+## Color modeling and conversion framework in Swift
 <img src="Assets/CoreColor_Banner.png" alt="CoreColor">
 
 [![Build and Test](https://github.com/yukonblue/CoreColor/actions/workflows/swift.yml/badge.svg)](https://github.com/yukonblue/CoreColor/actions/workflows/swift.yml)
@@ -6,12 +6,12 @@
 
 ## Overview
 
-*CoreColor* is a color modelling and conversion framework written in Swift.
+*CoreColor* is a color modeling and conversion framework written in Swift.
 It is designed for a wide range of audience, including color enthusiasts,
-engineers, visual designers and artists, as well as those that work in the
-scentific community that rely in color modelling software.
+engineers, visual designers and artists, as well as those involved in
+scientific researches that rely on color modeling.
 
-*CoreColor* provides the modelling for a set of common color models and associated colorspaces,
+*CoreColor* provides the modeling for a set of common color models and associated colorspaces,
 including those that many are familiar with, including RGB, CMYK, HSL, HSV, LAB, and XYZ,
 as well as facilities for converting between any one of the color models to the other.
 
