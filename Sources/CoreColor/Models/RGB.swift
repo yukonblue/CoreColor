@@ -11,10 +11,20 @@ import simd
 /// The RGB color model, using the sRGB color space by default.
 public struct RGB: Color {
 
-    let r: Float
-    let g: Float
-    let b: Float
+    /// The 'red' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let r: Float
+
+    /// The 'green' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let g: Float
+
+    /// The 'blue' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let b: Float
+
     public let alpha: Float
+
     public let space: RGBColorSpace
 
     init(r: Float, g: Float, b: Float, alpha: Float, space: RGBColorSpace) {
@@ -25,6 +35,14 @@ public struct RGB: Color {
         self.space = space
     }
 
+    /// Initializes an instance of ``RGB`` with a hexadecimal color representation in the form of '#xxxxxx'.
+    ///
+    /// - Parameters:
+    ///   - hex: The hexadecimal color representation in string, in the form of `'#xxxxxx'`, where each `'#'`
+    ///          denotes an ASCII character in the range of `[0-9][a-f][A-F]`.
+    ///   - alpha: The alpha component of the color, defaults to `1.0`.
+    ///   - spcae: The RGB color space of the color, defaults to the sRGB color space.
+    /// - Returns: An instance of ``RGB`` if successful, `nil` otherwise.
     init?(hex: String, alpha: Float = 1.0, space: RGBColorSpace = RGBColorSpaces.sRGB) {
         guard let regex = try? NSRegularExpression(pattern: "^#[A-Fa-f0-9]{6}$") else {
             return nil

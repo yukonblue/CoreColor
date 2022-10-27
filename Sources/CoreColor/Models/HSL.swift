@@ -26,7 +26,7 @@ extension HueColor {
 /**
  * A color model represented with Hue, Saturation, and Lightness.
  *
- * This is a cylindrical representation of the sRGB space used in [RGB].
+ * This is a cylindrical representation of the sRGB space.
  *
  * | Component  | Description                               | Range      |
  * | ---------- | ----------------------------------------- | ---------- |
@@ -36,9 +36,20 @@ extension HueColor {
  */
 public struct HSL: HueColor {
 
-    let h: Float
-    let s: Float
-    let l: Float
+    /// The 'hue' component of the model, represented in number of degrees
+    /// in range of `[0.0, 360.0)`.
+    public let h: Float
+
+    /// The 'saturation' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let s: Float
+
+    /// The 'lightness' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let l: Float
+
+    /// The alpha component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
     public let alpha: Float
 
     public var space: HSLColorSpace {
@@ -80,6 +91,7 @@ public struct HSL: HueColor {
     }
 }
 
+/// HSL color space.
 public struct HSLColorSpace: ColorSpace {
 
     public typealias ColorModel = HSL

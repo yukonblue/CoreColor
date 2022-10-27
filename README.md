@@ -12,16 +12,16 @@ engineers, visual designers and artists, as well as those involved in
 scientific researches that rely on color modeling.
 
 *CoreColor* provides the modeling for a variety of common color models
-and associated color spaces, including those that many are familiar with,
-such as RGB, CMYK, HSL, HSV, LAB, and XYZ, as well as facilities
-for converting between any one of the color models to the other.
+and associated color spaces, including common ones such as
+RGB, CMYK, HSL, HSV, LAB, and XYZ, as well as facilities
+for converting between a particular color model to any of the other ones.
 
 
 ## Usage
 
-The interfaces of *CoreColor* are simple and intuitive to use. Here's an example
-to convert an instance of RGB color model in sRGB color space to the equivalent
-CMYK model.
+The interfaces of *CoreColor* are simple and intuitive to use.
+Here's an example of creating an instance of RGB color model
+in sRGB color space, and convert it to the equivalent CMYK model.
 
 ```swift
 import CoreColor

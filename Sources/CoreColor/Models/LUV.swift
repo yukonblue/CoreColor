@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// LUV color space.
 public struct LUVColorSpace: WhitePointColorSpace {
 
     public typealias ColorModel = LUV
@@ -22,23 +23,24 @@ public struct LUVColorSpace: WhitePointColorSpace {
     }
 }
 
+/// Set of pre-defined LUV color spaces.
 enum LUVColorSpaces {
 
     ///
-    /// An [LUV] color space calculated relative to [Illuminant.D65]
+    /// LUV color space calculated relative to CIE 1931 2° Standard Illuminant D65.
     ///
-    static let LUV65: LUVColorSpace = LUVColorSpace(whitePoint: Illuminant.D65)
+    static public let LUV65: LUVColorSpace = LUVColorSpace(whitePoint: Illuminant.D65)
 
     ///
-    /// An [LUV] color space calculated relative to [Illuminant.D50]
+    /// LUV color space calculated relative to CIE 1931 2° Standard Illuminant D50.
     ///
-    static let LUV50: LUVColorSpace = LUVColorSpace(whitePoint: Illuminant.D50)
+    static public let LUV50: LUVColorSpace = LUVColorSpace(whitePoint: Illuminant.D50)
 }
 
 /**
  * The CIE LUV color space, also referred to as `CIE 1976 L*u*v*`.
  *
- * ``LUV`` is calculated relative to a given white point, which defaults to D65.
+ * ``LUV`` is calculated relative to a given white point, which defaults to CIE 1931 2° Standard Illuminant D65.
  *
  * | Component  | Description  | Range         |
  * | ---------- | ------------ | ------------- |
@@ -48,10 +50,20 @@ enum LUVColorSpaces {
  */
 public struct LUV: Color {
 
-    let l: Float
-    let u: Float
-    let v: Float
+    /// The 'lightness' component of the model, represented in floating-point
+    /// in range of `[0.0, 100.0]`.
+    public let l: Float
+
+    /// The 'u' component of the model, represented in floating-point
+    /// in range of `[-100.0, 100.0]`.
+    public let u: Float
+
+    /// The 'v' component of the model, represented in floating-point
+    /// in range of `[-100.0, 100.0]`.
+    public let v: Float
+
     public let alpha: Float
+
     public let space: LUVColorSpace
 
     public func toSRGB() -> RGB {

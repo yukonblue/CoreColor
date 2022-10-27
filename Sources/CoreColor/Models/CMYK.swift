@@ -19,10 +19,24 @@
  */
 public struct CMYK: Color {
 
-    let c: Float
-    let m: Float
-    let y: Float
-    let k: Float
+    /// The 'cyan' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let c: Float
+
+    /// The 'magenta' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let m: Float
+
+    /// The 'yellow' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let y: Float
+
+    /// The 'key' or 'black' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let k: Float
+
+    /// The alpha component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
     public let alpha: Float
 
     public var space: CMYKColorSpace {
