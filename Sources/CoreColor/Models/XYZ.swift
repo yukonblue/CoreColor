@@ -26,6 +26,7 @@ fileprivate let CAT02_XYZ_TO_LMS = matrix_float3x3(columns: (
 
 fileprivate let CAT02_LMS_TO_XYZ = CAT02_XYZ_TO_LMS.inverse
 
+/// XYZ color space abstraction.
 protocol XYZColorSpaceRepresentable: WhitePointColorSpace {
 
     func chromaticAdaptationMatrix(for srcWp: xyY, xyzToLms: matrix_float3x3, lmsToXyz: matrix_float3x3) -> matrix_float3x3
@@ -43,17 +44,18 @@ extension XYZColorSpaceRepresentable {
     }
 }
 
+/// Set of pre-defined XYZ color spaces.
 public enum XYZColorSpaces {
 
     ///
-    /// An [XYZ] color space calculated relative to [Illuminant.D65]
+    /// XYZ color space calculated relative to CIE 1931 2° Standard Illuminant D65.
     ///
-    static let XYZ65: XYZColorSpace = XYZColorSpace(whitePoint: Illuminant.D65)
+    static public let XYZ65: XYZColorSpace = XYZColorSpace(whitePoint: Illuminant.D65)
 
     ///
-    /// An [XYZ] color space calculated relative to [Illuminant.D50]
+    /// XYZ color space calculated relative to CIE 1931 2° Standard Illuminant D50.
     ///
-    static let XYZ50: XYZColorSpace = XYZColorSpace(whitePoint: Illuminant.D50)
+    static public let XYZ50: XYZColorSpace = XYZColorSpace(whitePoint: Illuminant.D50)
 }
 
 public struct XYZColorSpace: XYZColorSpaceRepresentable, ColorSpace {
@@ -75,7 +77,7 @@ public struct XYZColorSpace: XYZColorSpaceRepresentable, ColorSpace {
 ///
 /// The CIEXYZ color model.
 ///
-/// ``XYZ`` is calculated relative to a given white point, which defaults to D65.
+/// ``XYZ`` is calculated relative to a given white point, which defaults to CIE 1931 2° Standard Illuminant D65.
 ///
 /// | Component  | Range       |
 /// | -------------- | -------------|
@@ -83,6 +85,22 @@ public struct XYZColorSpace: XYZColorSpaceRepresentable, ColorSpace {
 /// |  y               | `[0, 1]` |
 /// |  z               | `[0, 1]` |
 public struct XYZ: Color {
+
+    /// The 'X' component of the color model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let x: Float
+
+    /// The 'Y' component of the color model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let y: Float
+
+    /// The 'Z' component of the color model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let z: Float
+
+    public let alpha: Float
+
+    public let space: XYZColorSpace
 
     public func toSRGB() -> RGB {
         to(rgbSpace: RGBColorSpaces.sRGB)
@@ -99,19 +117,13 @@ public struct XYZ: Color {
         return RGB(r: f(v.x), g: f(v.y), b: f(v.z), alpha: self.alpha, space: rgbSpace)
     }
 
-    let x: Float
-    let y: Float
-    let z: Float
-    public let alpha: Float
-    public let space: XYZColorSpace
-
     func adapt(toSpace space: XYZColorSpace) -> XYZ {
         adaptToM(space: space, m: CAT02_XYZ_TO_LMS, mi: CAT02_LMS_TO_XYZ)
     }
 
     private func adaptToM(space: XYZColorSpace, m: matrix_float3x3, mi: matrix_float3x3) -> XYZ {
         let transform = self.space.chromaticAdaptationMatrix(for: self.space.whitePoint.chromaticity, xyzToLms: m, lmsToXyz: mi)
-        
+
         let v = transform * simd_float3(x: self.x, y: self.y, z: self.z)
 
         return XYZ(x: v.x, y: v.y, z: v.z, alpha: self.alpha, space: self.space)

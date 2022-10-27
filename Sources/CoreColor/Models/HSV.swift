@@ -8,7 +8,7 @@
 /**
  * A color model represented with Hue, Saturation, and Value.
  *
- * This is a cylindrical representation of the sRGB space used in [RGB].
+ * This is a cylindrical representation of the sRGB space.
  *
  * | Component      | Description                               | Range      |
  * | -------------- | ----------------------------------------- | ---------- |
@@ -18,9 +18,25 @@
  */
 public struct HSV: HueColor {
 
-    let h: Float
-    let s: Float
-    let v: Float
+    /// The 'hue' component of the model, represented in number of degrees
+    /// in range of `[0.0, 360.0)`.
+    public let h: Float
+
+    /// The 'saturation' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let s: Float
+
+    /// The 'value' component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let v: Float
+
+    /// The alpha component of the model, represented in floating-point
+    /// in range of `[0.0, 1.0]`.
+    public let alpha: Float
+
+    public var space: HSVColorSpace {
+        Self.colorspace
+    }
 
     public func toSRGB() -> RGB {
         guard s >= 1e-7 else {
@@ -46,14 +62,9 @@ public struct HSV: HueColor {
         let sl = (lmin == 2) ? 0.0 : (s * vmin) / ((lmin <= 1) ? lmin : 2 - lmin)
         return HSL(h: h, s: sl, l: l, alpha: alpha)
     }
-
-    public let alpha: Float
-
-    public var space: HSVColorSpace {
-        Self.colorspace
-    }
 }
 
+/// HSV color space.
 public struct HSVColorSpace: ColorSpace {
 
     public typealias ColorModel = HSV

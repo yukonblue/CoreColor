@@ -22,7 +22,7 @@ public enum RGBColorSpaces {
     /// ### References
     /// - [IEC 61966-2-1](https://webstore.iec.ch/publication/6169)
     ///
-    static let sRGB: RGBColorSpace = RGBColorSpace(
+    static public let sRGB: RGBColorSpace = RGBColorSpace(
         name: "sRGB",
         whitePoint: Illuminant.D65,
         transferFunctions: SRGBTransferFunctions(),
@@ -37,7 +37,7 @@ public enum RGBColorSpaces {
     /// ### References
     /// - [IEC 61966-2-1](https://webstore.iec.ch/publication/6169)
     ///
-    static let LinearSRGB: RGBColorSpace = RGBColorSpace(
+    static public let LinearSRGB: RGBColorSpace = RGBColorSpace(
         name: "Linear sRGB",
         whitePoint: Illuminant.D65,
         transferFunctions: LinearTransferFunctions(),
@@ -54,7 +54,7 @@ public enum RGBColorSpaces {
     /// ### References
     /// - [Adobe RGB (1998) Color Image Encoding](https://www.adobe.com/digitalimag/pdfs/AdobeRGB1998.pdf)
     ///
-    static let AdobeRGB: RGBColorSpace = RGBColorSpace(
+    static public let AdobeRGB: RGBColorSpace = RGBColorSpace(
         name: "Adobe RGB",
         whitePoint: Illuminant.D65,
         transferFunctions: GammaTransferFunctions(gamma: 2.19921875),
@@ -73,7 +73,7 @@ public enum RGBColorSpaces {
      * - [RP 431-2:2011](https://ieeexplore.ieee.org/document/7290729)
      * - [Digital Cinema System Specification - Version 1.1](https://www.dcimovies.com/archives/spec_v1_1/DCI_DCinema_System_Spec_v1_1.pdf)
      */
-    static let DisplayP3: RGBColorSpace = RGBColorSpace(
+    static public let DisplayP3: RGBColorSpace = RGBColorSpace(
         name: "Display P3",
         whitePoint: Illuminant.D65,
         transferFunctions: SRGBTransferFunctions(),

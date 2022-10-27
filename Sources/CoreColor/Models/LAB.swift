@@ -7,11 +7,13 @@
 
 import Foundation
 
+/// Abstraction of LAB color spaces.
 protocol LABColorSpaceRepresentable: WhitePointColorSpace {
 
     init(whitePoint: WhitePoint)
 }
 
+/// LAB color space.
 public struct LABColorSpace: LABColorSpaceRepresentable {
 
     public typealias ColorModel = LAB
@@ -27,17 +29,18 @@ public struct LABColorSpace: LABColorSpaceRepresentable {
     }
 }
 
+/// Set of pre-defined LAB color spaces.
 public enum LABColorSpaces {
 
     ///
-    /// An [LAB] color space calculated relative to [Illuminant.D50]
+    /// LAB color space calculated relative to CIE 1931 2° Standard Illuminant D50.
     ///
-    static let LAB50: LABColorSpace = LABColorSpace(whitePoint: Illuminant.D50)
+    static public let LAB50: LABColorSpace = LABColorSpace(whitePoint: Illuminant.D50)
 
     ///
-    /// An [LAB] color space calculated relative to [Illuminant.D65]
+    /// LAB color space calculated relative to CIE 1931 2° Standard Illuminant D65.
     ///
-    static let LAB65: LABColorSpace = LABColorSpace(whitePoint: Illuminant.D65)
+    static public let LAB65: LABColorSpace = LABColorSpace(whitePoint: Illuminant.D65)
 }
 
 /**
@@ -45,7 +48,7 @@ public enum LABColorSpaces {
  *
  * The cylindrical representation of this space is LCHab.
  *
- * `LAB` is calculated relative to a given white point, which defaults to D65.
+ * `LAB` is calculated relative to a given white point, which defaults to CIE 1931 2° Standard Illuminant D65.
  *
  * | Component  | Description | Range         |
  * | ---------- | ----------- | ------------- |
@@ -55,9 +58,21 @@ public enum LABColorSpaces {
  */
 public struct LAB: Color {
 
-    let l: Float
-    let a: Float
-    let b: Float
+    /// The 'lightness' component of the model, represented in floating-point
+    /// in range of `[0.0, 100.0]`.
+    public let l: Float
+
+    /// The 'green-red' component of the model, represented in floating-point
+    /// in range of `[-100.0, 100.0]`.
+    public let a: Float
+
+    /// The 'blue-yellow' component of the model, represented in floating-point
+    /// in range of `[-100.0, 100.0]`.
+    public let b: Float
+
+    public let alpha: Float
+
+    public let space: LABColorSpace
 
     public func toSRGB() -> RGB {
         switch l {
@@ -89,11 +104,7 @@ public struct LAB: Color {
         let xr = (it2 > CIE_E) ? it2 : (116 * fx - 16) / CIE_K
 
         let wp = labColorSpace.whitePoint.chromaticity
-        
+
         return XYZ(x: xr * wp.X, y: yr * wp.Y, z: zr * wp.Z, alpha: self.alpha, space: xyzSpace)
     }
-
-    public let alpha: Float
-
-    public let space: LABColorSpace
 }

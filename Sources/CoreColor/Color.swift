@@ -5,7 +5,7 @@
 //  Created by yukonblue on 10/14/2022.
 //
 
-/// Abstraction for concrete color models.
+/// Abstraction of concrete color models.
 public protocol Color {
 
     /// The associated color space type related to the color model.
