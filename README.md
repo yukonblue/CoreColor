@@ -2,6 +2,7 @@
 <img src="Sources/CoreColor/CoreColor.docc/Resources/logo@2x.png" alt="CoreColor">
 
 [![Build and Test](https://github.com/yukonblue/CoreColor/actions/workflows/swift.yml/badge.svg)](https://github.com/yukonblue/CoreColor/actions/workflows/swift.yml)
+[![Swift Version Compatibility](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fyukonblue%2FCoreColor%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/yukonblue/CoreColor)
 
 
 ## Overview
