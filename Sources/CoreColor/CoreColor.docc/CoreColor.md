@@ -4,6 +4,8 @@ Color modeling and conversion framework in Swift.
 
 ## Overview
 
+![logo](logo.png)
+
 *CoreColor* is a color modeling and conversion framework written in Swift.
 It is designed for a wide range of audience, including color enthusiasts,
 engineers, visual designers and artists, as well as those involved in
@@ -35,7 +37,7 @@ print(cmyk) // CMYK(c: 0.3333334, m: 0.1666667, y: 0.0, k: 0.39999998, alpha: 1.
 
 ### Color Models
 
-The following color models are currently supported in this version:
+The following color models are currently supported:
 
 - RGB (various RGB color spaces)
 - XYZ (CIE XYZ)
@@ -47,7 +49,7 @@ The following color models are currently supported in this version:
 
 ### RGB Color Space
 
-The following variations of RGB color spaces are currently supported in this version:
+The following variations of RGB color spaces are currently supported:
 
 - sRGB
 - Linear sRGB
