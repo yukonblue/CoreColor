@@ -105,3 +105,15 @@ class LUVTests: ColorTestCase {
         }
     }
 }
+
+extension LUVTests {
+
+    /// Tests that we can covert through all supported color spaces without above minimal precision loss.
+    func test_full_conversion() throws {
+        let original = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
+
+        let converted = original.toSRGB().toCMYK().toXYZ().toHSL().toHSV().toLAB().toLUV()
+
+        try assertIsSameLUV(converted, original)
+    }
+}

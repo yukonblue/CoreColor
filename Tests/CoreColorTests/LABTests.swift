@@ -105,3 +105,15 @@ class LABTests: ColorTestCase {
         }
     }
 }
+
+extension LABTests {
+
+    /// Tests that we can covert through all supported color spaces without above minimal precision loss.
+    func test_full_conversion() throws {
+        let original = LAB(l: 18.00, a: 18.00, b: 18.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        let converted = original.toSRGB().toCMYK().toXYZ().toHSL().toHSV().toLUV().toLAB()
+
+        try assertIsSameLAB(converted, original)
+    }
+}

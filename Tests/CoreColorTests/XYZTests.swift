@@ -131,3 +131,15 @@ class XYZTests: ColorTestCase {
         }
     }
 }
+
+extension XYZTests {
+
+    /// Tests that we can covert through all supported color spaces without above minimal precision loss.
+    func test_full_conversion() throws {
+        let original = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+
+        let converted = original.toSRGB().toCMYK().toHSL().toHSV().toLUV().toLAB().toXYZ()
+
+        try assertIsSameXYZ(converted, original)
+    }
+}

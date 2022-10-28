@@ -105,3 +105,18 @@ class HSLTests: ColorTestCase {
         }
     }
 }
+
+extension HSLTests {
+
+    /// Tests that we can covert through all supported color spaces without above minimal precision loss.
+    func test_full_conversion() throws {
+        let original = HSL(h: 64.0, s: 0.18, l: 0.18, alpha: 1.0)
+
+        let converted = original.toSRGB().toCMYK().toXYZ().toLUV().toLAB().toHSV().toHSL()
+
+        XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
+        XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
+        XCTAssertEqual(converted.l, original.l, accuracy: 1e-5)
+        XCTAssertEqual(converted.alpha, original.alpha)
+    }
+}
