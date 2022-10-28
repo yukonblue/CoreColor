@@ -264,3 +264,15 @@ extension RGBTests {
         XCTAssertEqual(srcColor.wcagContrastRatio(against: dstColor), expectedContrastRatio, accuracy: 1e-3)
     }
 }
+
+extension RGBTests {
+
+    /// Tests that we can covert through all supported color spaces without above minimal precision loss.
+    func test_full_conversion() throws {
+        let original = Self.sRGB_f5deb3
+
+        let converted = original.toXYZ().toCMYK().toHSL().toHSV().toLUV().toLAB().toSRGB()
+
+        try assertIsSameRGB(converted, original)
+    }
+}

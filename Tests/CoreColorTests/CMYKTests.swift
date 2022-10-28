@@ -111,3 +111,15 @@ class CMYKTests: ColorTestCase {
         }
     }
 }
+
+extension CMYKTests {
+
+    /// Tests that we can covert through all supported color spaces without above minimal precision loss.
+    func test_full_conversion() throws {
+        let original = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
+
+        let converted = original.toSRGB().toXYZ().toHSL().toHSV().toLUV().toLAB().toCMYK()
+
+        try assertIsSameCMYK(converted, original)
+    }
+}
