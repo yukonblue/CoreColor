@@ -1,5 +1,5 @@
 ## Color modeling and conversion framework in Swift
-<img src="Assets/CoreColor_Banner.png" alt="CoreColor">
+<img src="Sources/CoreColor/CoreColor.docc/Resources/logo@2x.png" alt="CoreColor">
 
 [![Build and Test](https://github.com/yukonblue/CoreColor/actions/workflows/swift.yml/badge.svg)](https://github.com/yukonblue/CoreColor/actions/workflows/swift.yml)
 
@@ -38,7 +38,7 @@ print(cmyk) // CMYK(c: 0.3333334, m: 0.1666667, y: 0.0, k: 0.39999998, alpha: 1.
 
 ### Color Models
 
-The following color models are currently supported in this version:
+The following color models are currently supported:
 
 - RGB (various RGB color spaces)
 - XYZ (CIE XYZ)
@@ -50,12 +50,24 @@ The following color models are currently supported in this version:
 
 ### RGB Color Space
 
-The following variations of RGB color spaces are currently supported in this version:
+The following variations of RGB color spaces are currently supported:
 
 - sRGB
 - Linear sRGB
 - Adobe RGB
 - Display P3
+
+### Precision and Accuracy
+
+*CoreColor* was designed to be sufficiently precise in its color modeling,
+as well as accurate in all color space conversions.
+
+All color model representations are based on 32-bit floating-point values.
+This achieves sufficient precision and accuracy for the intended audience.
+
+There is plan to extend the precision to beyond 32-bit floating
+points, as well as using integer representations for select color models in
+the future.
 
 
 ## License

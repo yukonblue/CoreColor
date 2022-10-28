@@ -58,6 +58,7 @@ public enum XYZColorSpaces {
     static public let XYZ50: XYZColorSpace = XYZColorSpace(whitePoint: Illuminant.D50)
 }
 
+/// XYZ color space.
 public struct XYZColorSpace: XYZColorSpaceRepresentable, ColorSpace {
 
     public typealias ColorModel = XYZ
