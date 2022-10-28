@@ -114,6 +114,9 @@ extension LABTests {
 
         let converted = original.toSRGB().toCMYK().toXYZ().toHSL().toHSV().toLUV().toLAB()
 
-        try assertIsSameLAB(converted, original)
+        XCTAssertEqual(converted.l, original.l, accuracy: 1e-1)
+        XCTAssertEqual(converted.a, original.a, accuracy: 1e-4)
+        XCTAssertEqual(converted.b, original.b, accuracy: 1e-4)
+        XCTAssertEqual(converted.alpha, original.alpha)
     }
 }
