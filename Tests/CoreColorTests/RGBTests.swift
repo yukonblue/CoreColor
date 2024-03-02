@@ -268,7 +268,7 @@ extension RGBTests {
 extension RGBTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
-    func test_full_conversion() throws {
+    func testRoundTripConversion() throws {
         let src = Self.sRGB_f5deb3
 
         // Static conversion

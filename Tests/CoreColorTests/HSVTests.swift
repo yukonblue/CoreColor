@@ -109,7 +109,7 @@ class HSVTests: ColorTestCase {
 extension HSVTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
-    func test_full_conversion() throws {
+    func testRoundTripConversion() throws {
         func _check(converted: HSV, original: HSV) throws {
            XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
            XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)

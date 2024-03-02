@@ -109,7 +109,7 @@ class LABTests: ColorTestCase {
 extension LABTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
-    func test_full_conversion() throws {
+    func testRoundTripConversion() throws {
         func _check(converted: LAB, original: LAB) throws {
             XCTAssertEqual(converted.l, original.l, accuracy: 1e-1)
             XCTAssertEqual(converted.a, original.a, accuracy: 1e-4)
