@@ -39,3 +39,69 @@ struct CMYKEquality: ColorModelEquality {
         XCTAssertEqual(lhs.space, rhs.space)
     }
 }
+
+struct HSLEquality: ColorModelEquality {
+
+    func checkEquals(lhs a: HSL, rhs b: HSL, accuracy: Float = 1e-5) {
+        assertEqual(a.h, b.h, accuracy: 1e-6)
+        assertEqual(a.s, b.s, accuracy: 1e-5)
+        assertEqual(a.l, b.l, accuracy: 1e-5)
+        assertEqual(a.alpha, b.alpha, accuracy: 1e-5)
+        XCTAssertEqual(a.space, b.space)
+    }
+}
+
+struct HSVEquality: ColorModelEquality {
+
+    func checkEquals(lhs a: HSV, rhs b: HSV, accuracy: Float = 1e-5) {
+        assertEqual(a.h, b.h, accuracy: 1e-5)
+        assertEqual(a.s, b.s, accuracy: 1e-5)
+        assertEqual(a.v, b.v, accuracy: 1e-4) // TODO: more accuracy
+        assertEqual(a.alpha, b.alpha, accuracy: 1e-5)
+        XCTAssertEqual(a.space, b.space)
+    }
+}
+
+struct LABEquality: ColorModelEquality {
+
+    func checkEquals(lhs a: LAB, rhs b: LAB, accuracy: Float = 1e-5) {
+        XCTAssertEqual(a.l, b.l, accuracy: 1e-5)
+        XCTAssertEqual(a.a, b.a, accuracy: 1e-4) // TODO: Need more accuracy
+        XCTAssertEqual(a.b, b.b, accuracy: 1e-5)
+        XCTAssertEqual(a.alpha, b.alpha, accuracy: 1e-5)
+        XCTAssertEqual(a.space, b.space)
+    }
+}
+
+struct LUVEquality: ColorModelEquality {
+
+    func checkEquals(lhs a: LUV, rhs b: LUV, accuracy: Float = 1e-5) {
+        assertEqual(a.l, b.l, accuracy: 1e-5)
+        assertEqual(a.u, b.u, accuracy: 1e-4)
+        assertEqual(a.v, b.v, accuracy: 1e-4) // TODO: more accuracy
+        assertEqual(a.alpha, b.alpha, accuracy: 1e-5)
+        XCTAssertEqual(a.space, b.space)
+    }
+}
+
+struct XYZEquality: ColorModelEquality {
+
+    func checkEquals(lhs a: XYZ, rhs b: XYZ, accuracy: Float = 1e-5) {
+        XCTAssertEqual(a.x, b.x, accuracy: 1e-5)
+        XCTAssertEqual(a.y, b.y, accuracy: 1e-5)
+        XCTAssertEqual(a.z, b.z, accuracy: 1e-5)
+        XCTAssertEqual(a.alpha, b.alpha, accuracy: 1e-5)
+        XCTAssertEqual(a.space, b.space)
+    }
+}
+
+struct RGBEquality: ColorModelEquality {
+
+    func checkEquals(lhs a: RGB, rhs b: RGB, accuracy: Float = 1e-5) {
+        XCTAssertEqual(a.r, b.r, accuracy: 1e-5)
+        XCTAssertEqual(a.g, b.g, accuracy: 1e-1)
+        XCTAssertEqual(a.b, b.b, accuracy: 1e-5)
+        XCTAssertEqual(a.alpha, b.alpha, accuracy: 1e-5)
+        XCTAssertEqual(a.space, b.space)
+    }
+}
