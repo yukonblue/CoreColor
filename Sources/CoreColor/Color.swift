@@ -38,6 +38,12 @@ public protocol Color {
 
     /// Converts to the equivalent LUV (i.e. CIE 1976 `L*u*v*`) color model.
     func toLUV() -> LUV
+
+    /// Convert to a specific color model.
+    func convert<T: Color>(to: T.Type) -> T
+
+    /// Convert to this color model from any color model.
+    static func from(color: any Color) -> Self
 }
 
 extension Color {
@@ -64,6 +70,10 @@ extension Color {
 
     public func toLUV() -> LUV {
         self.toXYZ().toLUV()
+    }
+
+    public func convert<T: Color>(to: T.Type) -> T {
+        T.from(color: self)
     }
 }
 

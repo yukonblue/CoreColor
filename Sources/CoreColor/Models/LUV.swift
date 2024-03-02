@@ -94,4 +94,8 @@ public struct LUV: Color {
 
         return XYZ(x: x, y: y, z: z, alpha: self.alpha, space: xyzSpace)
     }
+
+    public static func from(color: any Color) -> Self {
+        color.toLUV()
+    }
 }

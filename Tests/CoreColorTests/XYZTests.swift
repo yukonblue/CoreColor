@@ -48,7 +48,7 @@ class XYZTests: ColorTestCase {
     }
 
     func test_XYZ_to_HSV() throws {
-        try check_conversion(XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> HSV in
+        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> HSV in
             src.toHSV()
         } check: { converted, _ in
             XCTAssertTrue(converted.h.isFinite)
@@ -59,7 +59,7 @@ class XYZTests: ColorTestCase {
     }
 
     func test_XYZ_to_HSL() throws {
-        try check_conversion(XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> HSL in
+        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> HSL in
             src.toHSL()
         } check: { converted, _ in
             XCTAssertTrue(converted.h.isFinite)
@@ -70,7 +70,7 @@ class XYZTests: ColorTestCase {
     }
 
     func test_XYZ_to_XYZ() throws {
-        try check_conversion(XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> XYZ in
+        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> XYZ in
             src.toXYZ()
         } check: { converted, src in
             try assertIsSameXYZ(converted, src)
@@ -78,7 +78,7 @@ class XYZTests: ColorTestCase {
     }
 
     func test_XYZ_to_CMYK() throws {
-        try check_conversion(XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> CMYK in
+        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> CMYK in
             src.toCMYK()
         } check: { converted, _ in
             XCTAssertTrue(converted.c.isFinite)
@@ -90,13 +90,13 @@ class XYZTests: ColorTestCase {
     }
 
     func check_XYZ_to_LUV(xyz: XYZ, luv: LUV) throws {
-        try check_conversion(xyz) { (src: XYZ) -> LUV in
+        try checkConversion(from: xyz) { (src: XYZ) -> LUV in
             src.toLUV()
         } check: { converted, _ in
             try assertIsSameLUV(converted, luv)
         }
 
-        try check_conversion(xyz) { (src: XYZ) -> LUV in
+        try checkConversion(from: xyz) { (src: XYZ) -> LUV in
             luv.space.convert(from: xyz)
         } check: { converted, _ in
             try assertIsSameLUV(converted, luv)
@@ -104,13 +104,13 @@ class XYZTests: ColorTestCase {
     }
 
     func check_XYZ_to_RGB(xyz: XYZ, rgb: RGB) throws {
-        try check_conversion(xyz) { (src: XYZ) -> RGB in
+        try checkConversion(from: xyz) { (src: XYZ) -> RGB in
             src.toSRGB()
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
         }
 
-        try check_conversion(xyz) { (src: XYZ) -> RGB in
+        try checkConversion(from: xyz) { (src: XYZ) -> RGB in
             rgb.space.convert(from: xyz)
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
@@ -118,13 +118,13 @@ class XYZTests: ColorTestCase {
     }
 
     func check_XYZ_to_LAB(xyz: XYZ, lab: LAB) throws {
-        try check_conversion(xyz) { (src: XYZ) -> LAB in
+        try checkConversion(from: xyz) { (src: XYZ) -> LAB in
             src.toLAB()
         } check: { converted, _ in
             try assertIsSameLAB(converted, lab)
         }
 
-        try check_conversion(xyz) { (src: XYZ) -> LAB in
+        try checkConversion(from: xyz) { (src: XYZ) -> LAB in
             lab.space.convert(from: xyz)
         } check: { converted, _ in
             try assertIsSameLAB(converted, lab)
@@ -138,8 +138,32 @@ extension XYZTests {
     func test_full_conversion() throws {
         let original = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
 
-        let converted = original.toSRGB().toCMYK().toHSL().toHSV().toLUV().toLAB().toXYZ()
+        // Static conversion
+        try checkConversion(from: original) { (src: XYZ) -> XYZ in
+            original
+                .toSRGB()
+                .toCMYK()
+                .toHSL()
+                .toHSV()
+                .toLUV()
+                .toLAB()
+                .toXYZ()
+        } check: { converted, original in
+            try assertIsSameXYZ(converted, original)
+        }
 
-        try assertIsSameXYZ(converted, original)
+        // Dynamic conversion
+        try checkConversion(from: original) { (src: XYZ) -> XYZ in
+            original
+                .convert(to: RGB.self)
+                .convert(to: CMYK.self)
+                .convert(to: HSL.self)
+                .convert(to: HSV.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: XYZ.self)
+        } check: { converted, original in
+            try assertIsSameXYZ(converted, original)
+        }
     }
 }

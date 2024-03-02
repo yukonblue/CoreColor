@@ -28,15 +28,21 @@ class CMYKTests: ColorTestCase {
     }
 
     func check_CMYK_to_RGB(cmyk: CMYK, rgb: RGB) throws {
-        try check_conversion(cmyk) { (src: CMYK) -> RGB in
+        try checkConversion(from: cmyk) { (src: CMYK) -> RGB in
             src.toSRGB()
+        } check: { converted, _ in
+            try assertIsSameRGB(converted, rgb)
+        }
+
+        try checkConversion(from: cmyk) { (src: CMYK) -> RGB in
+            src.convert(to: RGB.self)
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
         }
     }
 
     func test_CMYK_to_XYZ() throws {
-        try check_conversion(CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> XYZ in
+        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> XYZ in
             src.toXYZ()
         } check: { converted, _ in
             XCTAssertTrue(converted.x.isFinite)
@@ -47,7 +53,7 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_LAB() throws {
-        try check_conversion(CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> LAB in
+        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> LAB in
             src.toLAB()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -58,7 +64,7 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_LUV() throws {
-        try check_conversion(CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> LUV in
+        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> LUV in
             src.toLUV()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -69,7 +75,7 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_HSV() throws {
-        try check_conversion(CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSV in
+        try checkConversion(from: CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSV in
             src.toHSV()
         } check: { converted, _ in
 //            XCTAssertEqual(converted.h, 50.0 / 100.0)  // TODO: look into this
@@ -80,7 +86,7 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_HSL() throws {
-        try check_conversion(CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSL in
+        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSL in
             src.toHSL()
         } check: { converted, _ in
 //            XCTAssertEqual(converted.h, 0.0) // TODO: look into this
@@ -89,7 +95,7 @@ class CMYKTests: ColorTestCase {
             XCTAssertEqual(converted.alpha, 1.00)
         }
 
-        try check_conversion(CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSL in
+        try checkConversion(from: CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSL in
             src.toHSL()
         } check: { converted, _ in
             XCTAssertEqual(converted.h, 50.4)
@@ -100,7 +106,7 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_CMYK() throws {
-        try check_conversion(CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> CMYK in
+        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> CMYK in
             src.toCMYK()
         } check: { converted, src in
             XCTAssertEqual(converted.c, src.c)
@@ -118,8 +124,32 @@ extension CMYKTests {
     func test_full_conversion() throws {
         let original = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
 
-        let converted = original.toSRGB().toXYZ().toHSL().toHSV().toLUV().toLAB().toCMYK()
+        // Static conversion
+        try checkConversion(from: original) { (src: CMYK) -> CMYK in
+            original
+                .toSRGB()
+                .toXYZ()
+                .toHSL()
+                .toHSV()
+                .toLUV()
+                .toLAB()
+                .toCMYK()
+        } check: { converted, _ in
+            try assertIsSameCMYK(converted, original)
+        }
 
-        try assertIsSameCMYK(converted, original)
+        // Dynamic conversion
+        try checkConversion(from: original) { (src: CMYK) -> CMYK in
+            original
+                .convert(to: RGB.self)
+                .convert(to: XYZ.self)
+                .convert(to: HSL.self)
+                .convert(to: HSV.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: CMYK.self)
+        } check: { converted, _ in
+            try assertIsSameCMYK(converted, original)
+        }
     }
 }

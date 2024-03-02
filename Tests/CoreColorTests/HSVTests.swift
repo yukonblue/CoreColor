@@ -25,13 +25,13 @@ class HSVTests: ColorTestCase {
     }
 
     func check_HSV_to_RGB(hsv: HSV, rgb: RGB) throws {
-        try check_conversion(hsv) { (src: HSV) -> RGB in
+        try checkConversion(from: hsv) { (src: HSV) -> RGB in
             src.toSRGB()
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
         }
 
-        try check_conversion(hsv) { (src: HSV) -> RGB in
+        try checkConversion(from: hsv) { (src: HSV) -> RGB in
             rgb.space.convert(from: hsv)
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
@@ -39,7 +39,7 @@ class HSVTests: ColorTestCase {
     }
 
     func test_HSV_to_XYZ() throws {
-        try check_conversion(HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> XYZ in
+        try checkConversion(from: HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> XYZ in
             src.toXYZ()
         } check: { converted, _ in
             XCTAssertTrue(converted.x.isFinite)
@@ -50,7 +50,7 @@ class HSVTests: ColorTestCase {
     }
 
     func test_HSV_to_HSL() throws {
-        try check_conversion(HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> HSL in
+        try checkConversion(from: HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> HSL in
             src.toHSL()
         } check: { converted, _ in
             XCTAssertEqual(converted.h, 144.0, accuracy: 1e-3)
@@ -61,7 +61,7 @@ class HSVTests: ColorTestCase {
     }
 
     func test_HSV_to_LAB() throws {
-        try check_conversion(HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> LAB in
+        try checkConversion(from: HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> LAB in
             src.toLAB()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -72,7 +72,7 @@ class HSVTests: ColorTestCase {
     }
 
     func test_HSV_to_LUV() throws {
-        try check_conversion(HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> LUV in
+        try checkConversion(from: HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> LUV in
             src.toLUV()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -83,7 +83,7 @@ class HSVTests: ColorTestCase {
     }
 
     func test_HSV_to_CMYK() throws {
-        try check_conversion(HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> CMYK in
+        try checkConversion(from: HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> CMYK in
             src.toCMYK()
         } check: { converted, _ in
             XCTAssertEqual(converted.c, 0.50)
@@ -95,7 +95,7 @@ class HSVTests: ColorTestCase {
     }
 
     func test_HSV_to_HSV() throws {
-        try check_conversion(HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> HSV in
+        try checkConversion(from: HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> HSV in
             src.toHSV()
         } check: { converted, src in
             XCTAssertEqual(converted.h, src.h)
@@ -110,13 +110,41 @@ extension HSVTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
     func test_full_conversion() throws {
+        func _check(converted: HSV, original: HSV) throws {
+           XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
+           XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
+           XCTAssertEqual(converted.v, original.v, accuracy: 1e-5)
+           XCTAssertEqual(converted.alpha, original.alpha)
+        }
+
         let original = HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)
 
-        let converted = original.toSRGB().toCMYK().toXYZ().toHSL().toLUV().toLAB().toHSV()
+        // Static conversion
+        try checkConversion(from: original) { (src: HSV) -> HSV in
+            original
+                .toSRGB()
+                .toCMYK()
+                .toXYZ()
+                .toHSL()
+                .toLUV()
+                .toLAB()
+                .toHSV()
+        } check: { converted, converted in
+            try _check(converted: converted, original: original)
+        }
 
-        XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
-        XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
-        XCTAssertEqual(converted.v, original.v, accuracy: 1e-5)
-        XCTAssertEqual(converted.alpha, original.alpha)
+        // Dynamic conversion
+        try checkConversion(from: original) { (src: HSV) -> HSV in
+            original
+                .convert(to: RGB.self)
+                .convert(to: CMYK.self)
+                .convert(to: XYZ.self)
+                .convert(to: HSL.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: HSV.self)
+        } check: { converted, converted in
+            try _check(converted: converted, original: original)
+        }
     }
 }

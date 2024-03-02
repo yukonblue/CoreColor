@@ -49,6 +49,10 @@ public struct CMYK: Color {
         let b = (1 - y) * (1 - k)
         return RGB(r: r, g: g, b: b, alpha: alpha, space: RGBColorSpaces.sRGB)
     }
+
+    public static func from(color: any Color) -> Self {
+        color.toCMYK()
+    }
 }
 
 /// CMYK color space.

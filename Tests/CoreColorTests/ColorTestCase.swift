@@ -10,7 +10,7 @@ import XCTest
 
 class ColorTestCase: XCTestCase {
 
-    func check_conversion<T: Color, U: Color>(_ src: T, conversion: (T) -> U, check: (U, T) throws -> Void) throws {
+    func checkConversion<T: Color, U: Color>(from src: T, conversion: (T) -> U, check: (U, T) throws -> Void) throws {
         try check(conversion(src), src)
     }
 
