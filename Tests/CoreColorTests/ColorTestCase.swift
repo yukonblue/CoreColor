@@ -67,12 +67,7 @@ class ColorTestCase: XCTestCase {
     }
 
     func assertIsSameCMYK(_ a: CMYK, _ b: CMYK) throws {
-        assertEqual(a.c, b.c, accuracy: 1e-5)
-        assertEqual(a.m, b.m, accuracy: 1e-5)
-        assertEqual(a.y, b.y, accuracy: 1e-5)
-        assertEqual(a.k, b.k, accuracy: 1e-5)
-        assertEqual(a.alpha, b.alpha, accuracy: 1e-5)
-        XCTAssertEqual(a.space, b.space)
+        CMYKEquality().checkEquals(lhs: a, rhs: b)
     }
 
     private func assertEqual(_ a: Float, _ b: Float, accuracy: Float = 1e-5) {

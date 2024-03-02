@@ -109,11 +109,7 @@ class CMYKTests: ColorTestCase {
         try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> CMYK in
             src.toCMYK()
         } check: { converted, src in
-            XCTAssertEqual(converted.c, src.c)
-            XCTAssertEqual(converted.y, src.y)
-            XCTAssertEqual(converted.m, src.m)
-            XCTAssertEqual(converted.k, src.k)
-            XCTAssertEqual(converted.alpha, src.alpha)
+            CMYKEquality().checkEquals(lhs: converted, rhs: src)
         }
     }
 }
