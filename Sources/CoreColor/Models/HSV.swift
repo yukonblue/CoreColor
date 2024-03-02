@@ -62,6 +62,10 @@ public struct HSV: HueColor {
         let sl = (lmin == 2) ? 0.0 : (s * vmin) / ((lmin <= 1) ? lmin : 2 - lmin)
         return HSL(h: h, s: sl, l: l, alpha: alpha)
     }
+
+    public static func from(color: any Color) -> Self {
+        color.toHSV()
+    }
 }
 
 /// HSV color space.

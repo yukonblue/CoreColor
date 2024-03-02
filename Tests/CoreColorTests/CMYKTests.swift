@@ -122,4 +122,19 @@ extension CMYKTests {
 
         try assertIsSameCMYK(converted, original)
     }
+
+    func test_full_conversion_dynamic() throws {
+        let original = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
+
+        let converted: CMYK = original
+            .convert(to: RGB.self)
+            .convert(to: XYZ.self)
+            .convert(to: HSL.self)
+            .convert(to: HSV.self)
+            .convert(to: LUV.self)
+            .convert(to: LAB.self)
+            .convert(to: CMYK.self)
+
+        try assertIsSameCMYK(converted, original)
+    }
 }

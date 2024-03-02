@@ -93,6 +93,10 @@ public struct RGB: Color {
     public func toSRGB() -> RGB {
         self.convert(toRGBColorSpace: RGBColorSpaces.sRGB)
     }
+
+    public static func from(color: any Color) -> Self {
+        color.toSRGB()
+    }
 }
 
 extension RGB {

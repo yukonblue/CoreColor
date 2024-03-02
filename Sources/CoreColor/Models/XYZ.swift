@@ -122,6 +122,10 @@ public struct XYZ: Color {
         adaptToM(space: space, m: CAT02_XYZ_TO_LMS, mi: CAT02_LMS_TO_XYZ)
     }
 
+    static public func from(color: any Color) -> Self {
+        color.toXYZ()
+    }
+
     private func adaptToM(space: XYZColorSpace, m: matrix_float3x3, mi: matrix_float3x3) -> XYZ {
         let transform = self.space.chromaticAdaptationMatrix(for: self.space.whitePoint.chromaticity, xyzToLms: m, lmsToXyz: mi)
 

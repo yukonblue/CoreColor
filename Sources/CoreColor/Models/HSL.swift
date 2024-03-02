@@ -89,6 +89,10 @@ public struct HSL: HueColor {
 
         return HSV(h: h, s: sv, v: v, alpha: alpha)
     }
+
+    public static func from(color: any Color) -> Self {
+        color.toHSL()
+    }
 }
 
 /// HSL color space.

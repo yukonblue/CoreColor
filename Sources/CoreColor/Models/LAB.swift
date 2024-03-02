@@ -107,4 +107,8 @@ public struct LAB: Color {
 
         return XYZ(x: xr * wp.X, y: yr * wp.Y, z: zr * wp.Z, alpha: self.alpha, space: xyzSpace)
     }
+
+    public static func from(color: any Color) -> Self {
+        color.toLAB()
+    }
 }
