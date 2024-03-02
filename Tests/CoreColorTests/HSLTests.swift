@@ -53,11 +53,29 @@ class HSLTests: ColorTestCase {
             XCTAssertTrue(converted.z.isFinite)
             XCTAssertTrue(converted.alpha.isFinite)
         }
+
+        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> XYZ in
+            src.convert(to: XYZ.self)
+        } check: { converted, _ in
+            XCTAssertTrue(converted.x.isFinite)
+            XCTAssertTrue(converted.y.isFinite)
+            XCTAssertTrue(converted.z.isFinite)
+            XCTAssertTrue(converted.alpha.isFinite)
+        }
     }
 
     func test_HSL_to_LAB() throws {
         try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LAB in
             src.toLAB()
+        } check: { converted, _ in
+            XCTAssertTrue(converted.l.isFinite)
+            XCTAssertTrue(converted.a.isFinite)
+            XCTAssertTrue(converted.b.isFinite)
+            XCTAssertTrue(converted.alpha.isFinite)
+        }
+
+        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LAB in
+            src.convert(to: LAB.self)
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
             XCTAssertTrue(converted.a.isFinite)
@@ -75,11 +93,29 @@ class HSLTests: ColorTestCase {
             XCTAssertTrue(converted.v.isFinite)
             XCTAssertTrue(converted.alpha.isFinite)
         }
+
+        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LUV in
+            src.convert(to: LUV.self)
+        } check: { converted, _ in
+            XCTAssertTrue(converted.l.isFinite)
+            XCTAssertTrue(converted.u.isFinite)
+            XCTAssertTrue(converted.v.isFinite)
+            XCTAssertTrue(converted.alpha.isFinite)
+        }
     }
 
     func test_HSL_to_HSV() throws {
         try checkConversion(from: HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSV in
             src.toHSV()
+        } check: { converted, _ in
+            XCTAssertEqual(converted.h, 64.0)
+            XCTAssertEqual(converted.s, 0.31, accuracy: 1e-2)
+            XCTAssertEqual(converted.v, 0.21, accuracy: 1e-2)
+            XCTAssertEqual(converted.alpha, 1.0)
+        }
+
+        try checkConversion(from: HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSV in
+            src.convert(to: HSV.self)
         } check: { converted, _ in
             XCTAssertEqual(converted.h, 64.0)
             XCTAssertEqual(converted.s, 0.31, accuracy: 1e-2)
