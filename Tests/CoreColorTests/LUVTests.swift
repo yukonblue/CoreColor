@@ -25,13 +25,13 @@ class LUVTests: ColorTestCase {
     }
 
     func check_LUV_to_XYZ(luv: LUV, xyz: XYZ) throws {
-        try check_conversion(luv) { (src: LUV) -> XYZ in
+        try checkConversion(from: luv) { (src: LUV) -> XYZ in
             src.toXYZ()
         } check: { converted, _ in
             try assertIsSameXYZ(converted, xyz)
         }
 
-        try check_conversion(luv) { (src: LUV) -> XYZ in
+        try checkConversion(from: luv) { (src: LUV) -> XYZ in
             xyz.space.convert(from: luv)
         } check: { converted, _ in
             try assertIsSameXYZ(converted, xyz)
@@ -39,7 +39,7 @@ class LUVTests: ColorTestCase {
     }
 
     func test_LUV_to_RGB() throws {
-        try check_conversion(LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> RGB in
+        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> RGB in
             src.toSRGB()
         } check: { converted, _ in
             XCTAssertTrue(converted.r.isFinite)
@@ -50,7 +50,7 @@ class LUVTests: ColorTestCase {
     }
 
     func test_LUV_to_LAB() throws {
-        try check_conversion(LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> LAB in
+        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> LAB in
             src.toLAB()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -61,7 +61,7 @@ class LUVTests: ColorTestCase {
     }
 
     func test_LUV_to_HSV() throws {
-        try check_conversion(LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> HSV in
+        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> HSV in
             src.toHSV()
         } check: { converted, _ in
             XCTAssertTrue(converted.h.isFinite)
@@ -72,7 +72,7 @@ class LUVTests: ColorTestCase {
     }
 
     func test_LUV_to_HSL() throws {
-        try check_conversion(LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> HSL in
+        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> HSL in
             src.toHSL()
         } check: { converted, _ in
             XCTAssertTrue(converted.h.isFinite)
@@ -83,7 +83,7 @@ class LUVTests: ColorTestCase {
     }
 
     func test_LUV_to_CMYK() throws {
-        try check_conversion(LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> CMYK in
+        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> CMYK in
             src.toCMYK()
         } check: { converted, _ in
             XCTAssertTrue(converted.c.isFinite)
@@ -95,7 +95,7 @@ class LUVTests: ColorTestCase {
     }
 
     func test_LUV_to_LUV() throws {
-        try check_conversion(LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> LUV in
+        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> LUV in
             src.toLUV()
         } check: { converted, src in
             XCTAssertEqual(converted.l, src.l, accuracy: 1e-4) // TODO: more accuracy
@@ -113,7 +113,7 @@ extension LUVTests {
         let original = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
 
         // Static conversion
-        try check_conversion(original) { (src: LUV) -> LUV in
+        try checkConversion(from: original) { (src: LUV) -> LUV in
             original
                 .toSRGB()
                 .toCMYK()
@@ -127,7 +127,7 @@ extension LUVTests {
         }
 
         // Dynamic conversion
-        try check_conversion(original) { (src: LUV) -> LUV in
+        try checkConversion(from: original) { (src: LUV) -> LUV in
             original
                 .convert(to: RGB.self)
                 .convert(to: CMYK.self)

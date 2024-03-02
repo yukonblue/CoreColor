@@ -104,7 +104,7 @@ class RGBTests: ColorTestCase {
     }
 
     func test_RGB_to_LAB() throws {
-        try check_conversion(RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> LAB in
+        try checkConversion(from: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> LAB in
             src.toLAB()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -139,13 +139,13 @@ class RGBTests: ColorTestCase {
     }
 
     private func check_RGB_to_sRGB(src: RGB, dst: RGB) throws {
-        try check_conversion(src) { (src: RGB) -> RGB in
+        try checkConversion(from: src) { (src: RGB) -> RGB in
             src.toSRGB()
         } check: { converted, _ in
             try assertIsSameRGB(converted, dst)
         }
 
-        try check_conversion(src) { (src: RGB) -> RGB in
+        try checkConversion(from: src) { (src: RGB) -> RGB in
             dst.space.convert(from: src)
         } check: { converted, _ in
             try assertIsSameRGB(converted, dst)
@@ -153,13 +153,13 @@ class RGBTests: ColorTestCase {
     }
 
     private func check_RGB_to_LUV(rgb: RGB, luv: LUV) throws {
-        try check_conversion(rgb) { (src: RGB) -> LUV in
+        try checkConversion(from: rgb) { (src: RGB) -> LUV in
             src.toLUV()
         } check: { converted, _ in
             try assertIsSameLUV(converted, luv)
         }
 
-        try check_conversion(rgb) { (src: RGB) -> LUV in
+        try checkConversion(from: rgb) { (src: RGB) -> LUV in
             luv.space.convert(from: rgb)
         } check: { converted, _ in
             try assertIsSameLUV(converted, luv)
@@ -167,13 +167,13 @@ class RGBTests: ColorTestCase {
     }
 
     private func check_RGB_to_HSV(rgb: RGB, hsv: HSV) throws {
-        try check_conversion(rgb) { (src: RGB) -> HSV in
+        try checkConversion(from: rgb) { (src: RGB) -> HSV in
             src.toHSV()
         } check: { converted, _ in
             try assertIsSameHSV(converted, hsv)
         }
 
-        try check_conversion(rgb) { (src: RGB) -> HSV in
+        try checkConversion(from: rgb) { (src: RGB) -> HSV in
             hsv.space.convert(from: rgb)
         } check: { converted, _ in
             try assertIsSameHSV(converted, hsv)
@@ -181,13 +181,13 @@ class RGBTests: ColorTestCase {
     }
 
     private func check_RGB_to_HSL(rgb: RGB, hsl: HSL) throws {
-        try check_conversion(rgb) { (src: RGB) -> HSL in
+        try checkConversion(from: rgb) { (src: RGB) -> HSL in
             src.toHSL()
         } check: { converted, _ in
             try assertIsSameHSL(converted, hsl)
         }
 
-        try check_conversion(rgb) { (src: RGB) -> HSL in
+        try checkConversion(from: rgb) { (src: RGB) -> HSL in
             hsl.space.convert(from: rgb)
         } check: { converted, _ in
             try assertIsSameHSL(converted, hsl)
@@ -195,13 +195,13 @@ class RGBTests: ColorTestCase {
     }
 
     private func check_RGB_to_XYZ(rgb: RGB, xyz: XYZ) throws {
-        try check_conversion(rgb) { (src: RGB) -> XYZ in
+        try checkConversion(from: rgb) { (src: RGB) -> XYZ in
             src.toXYZ()
         } check: { converted, _ in
             try assertIsSameXYZ(converted, xyz)
         }
 
-        try check_conversion(rgb) { (src: RGB) -> XYZ in
+        try checkConversion(from: rgb) { (src: RGB) -> XYZ in
             xyz.space.convert(from: rgb)
         } check: { converted, _ in
             try assertIsSameXYZ(converted, xyz)
@@ -209,13 +209,13 @@ class RGBTests: ColorTestCase {
     }
 
     private func check_RGB_to_CMYK(rgb: RGB, cmyk: CMYK) throws {
-        try check_conversion(rgb) { (src: RGB) -> CMYK in
+        try checkConversion(from: rgb) { (src: RGB) -> CMYK in
             src.toCMYK()
         } check: { converted, _ in
             try assertIsSameCMYK(converted, cmyk)
         }
 
-        try check_conversion(rgb) { (src: RGB) -> CMYK in
+        try checkConversion(from: rgb) { (src: RGB) -> CMYK in
             cmyk.space.convert(from: rgb)
         } check: { converted, _ in
             try assertIsSameCMYK(converted, cmyk)
@@ -272,7 +272,7 @@ extension RGBTests {
         let original = Self.sRGB_f5deb3
 
         // Static conversion
-        try check_conversion(original) { (src: RGB) -> RGB in
+        try checkConversion(from: original) { (src: RGB) -> RGB in
             original
                 .toXYZ()
                 .toCMYK()
@@ -286,7 +286,7 @@ extension RGBTests {
         }
 
         // Dynamic conversion
-        try check_conversion(original) { (src: RGB) -> RGB in
+        try checkConversion(from: original) { (src: RGB) -> RGB in
             original
                 .convert(to: XYZ.self)
                 .convert(to: CMYK.self)

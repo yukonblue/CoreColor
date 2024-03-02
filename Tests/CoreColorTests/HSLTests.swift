@@ -25,19 +25,19 @@ class HSLTests: ColorTestCase {
     }
 
     func check_HSL_to_RGB(hsl: HSL, rgb: RGB) throws {
-        try check_conversion(hsl) { (src: HSL) -> RGB in
+        try checkConversion(from: hsl) { (src: HSL) -> RGB in
             src.toSRGB()
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
         }
 
-        try check_conversion(hsl) { (src: HSL) -> RGB in
+        try checkConversion(from: hsl) { (src: HSL) -> RGB in
             src.convert(to: RGB.self)
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
         }
 
-        try check_conversion(hsl) { (src: HSL) -> RGB in
+        try checkConversion(from: hsl) { (src: HSL) -> RGB in
             rgb.space.convert(from: hsl)
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
@@ -45,7 +45,7 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_XYZ() throws {
-        try check_conversion(HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> XYZ in
+        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> XYZ in
             src.toXYZ()
         } check: { converted, _ in
             XCTAssertTrue(converted.x.isFinite)
@@ -56,7 +56,7 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_LAB() throws {
-        try check_conversion(HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LAB in
+        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LAB in
             src.toLAB()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -67,7 +67,7 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_LUV() throws {
-        try check_conversion(HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LUV in
+        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LUV in
             src.toLUV()
         } check: { converted, _ in
             XCTAssertTrue(converted.l.isFinite)
@@ -78,7 +78,7 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_HSV() throws {
-        try check_conversion(HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSV in
+        try checkConversion(from: HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSV in
             src.toHSV()
         } check: { converted, _ in
             XCTAssertEqual(converted.h, 64.0)
@@ -89,7 +89,7 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_HSL() throws {
-        try check_conversion(HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSL in
+        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSL in
             src.toHSL()
         } check: { converted, src in
             XCTAssertEqual(converted.h, src.h, accuracy: 1e-5)
@@ -100,7 +100,7 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_CMYK() throws {
-        try check_conversion(HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> CMYK in
+        try checkConversion(from: HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> CMYK in
             src.toCMYK()
         } check: { converted, _ in
             XCTAssertEqual(converted.c, 0.02, accuracy: 1e-3)
@@ -126,7 +126,7 @@ extension HSLTests {
         let original = HSL(h: 64.0, s: 0.18, l: 0.18, alpha: 1.0)
 
         // Static conversion
-        try check_conversion(original) { (src: HSL) -> HSL in
+        try checkConversion(from: original) { (src: HSL) -> HSL in
             original
                 .toSRGB()
                 .toCMYK()
@@ -140,7 +140,7 @@ extension HSLTests {
         }
 
         // Dynamic conversion
-        try check_conversion(original) { (src: HSL) -> HSL in
+        try checkConversion(from: original) { (src: HSL) -> HSL in
             original
                 .convert(to: RGB.self)
                 .convert(to: CMYK.self)
