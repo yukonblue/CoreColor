@@ -110,10 +110,10 @@ extension LUVTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
     func test_full_conversion() throws {
-        let original = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
+        let src = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
 
         // Static conversion
-        try checkConversion(from: original) { (src: LUV) -> LUV in
+        try checkRoundTripConversion(from: src) { original in
             original
                 .toSRGB()
                 .toCMYK()
@@ -122,21 +122,22 @@ extension LUVTests {
                 .toHSV()
                 .toLAB()
                 .toLUV()
-        } check: { converted, src in
+        } check: { converted, original in
             try assertIsSameLUV(converted, original)
         }
 
         // Dynamic conversion
-        try checkConversion(from: original) { (src: LUV) -> LUV in
-            original
-                .convert(to: RGB.self)
-                .convert(to: CMYK.self)
-                .convert(to: XYZ.self)
-                .convert(to: HSL.self)
-                .convert(to: HSV.self)
-                .convert(to: LAB.self)
-                .convert(to: LUV.self)
-        } check: { converted, src in
+        try checkRoundTripConversion(
+            from: src,
+            withTypes: [
+                RGB.self,
+                CMYK.self,
+                XYZ.self,
+                HSL.self,
+                HSV.self,
+                LAB.self,
+            ]
+        ) { converted, original in
             try assertIsSameLUV(converted, original)
         }
     }

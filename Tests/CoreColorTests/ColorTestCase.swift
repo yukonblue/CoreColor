@@ -84,3 +84,26 @@ class ColorTestCase: XCTestCase {
         }
     }
 }
+
+extension ColorTestCase {
+
+    func checkRoundTripConversion<T: Color>(
+        from src: T,
+        conversion: (T) -> T,
+        check: (T, T) throws -> Void
+    ) throws {
+        try check(conversion(src), src)
+    }
+
+    func checkRoundTripConversion<T: Color>(
+        from src: T,
+        withTypes colorTypes: [any Color.Type],
+        check: (T, T) throws -> Void
+    ) throws {
+        let intermediateResult: any Color = colorTypes.reduce(src) { result, colorType in
+            result.convert(to: colorType)
+        }
+        let result = intermediateResult.convert(to: T.self)
+        try check(result, src)
+    }
+}

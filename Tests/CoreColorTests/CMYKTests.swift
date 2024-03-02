@@ -122,10 +122,10 @@ extension CMYKTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
     func test_full_conversion() throws {
-        let original = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
+        let src = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
 
         // Static conversion
-        try checkConversion(from: original) { (src: CMYK) -> CMYK in
+        try checkRoundTripConversion(from: src) { original in
             original
                 .toSRGB()
                 .toXYZ()
@@ -134,21 +134,22 @@ extension CMYKTests {
                 .toLUV()
                 .toLAB()
                 .toCMYK()
-        } check: { converted, _ in
+        } check: { converted, original in
             try assertIsSameCMYK(converted, original)
         }
 
         // Dynamic conversion
-        try checkConversion(from: original) { (src: CMYK) -> CMYK in
-            original
-                .convert(to: RGB.self)
-                .convert(to: XYZ.self)
-                .convert(to: HSL.self)
-                .convert(to: HSV.self)
-                .convert(to: LUV.self)
-                .convert(to: LAB.self)
-                .convert(to: CMYK.self)
-        } check: { converted, _ in
+        try checkRoundTripConversion(
+            from: src,
+            withTypes: [
+                RGB.self,
+                XYZ.self,
+                HSL.self,
+                HSV.self,
+                LUV.self,
+                LAB.self
+            ]
+        ) { converted, original in
             try assertIsSameCMYK(converted, original)
         }
     }

@@ -117,10 +117,10 @@ extension LABTests {
             XCTAssertEqual(converted.alpha, original.alpha)
         }
 
-        let original = LAB(l: 18.00, a: 18.00, b: 18.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+        let src = LAB(l: 18.00, a: 18.00, b: 18.00, alpha: 1.0, space: LABColorSpaces.LAB65)
 
         // Static conversion
-        try checkConversion(from: original) { (src: LAB) -> LAB in
+        try checkRoundTripConversion(from: src) { original in
             original
                 .toSRGB()
                 .toCMYK()
@@ -134,16 +134,17 @@ extension LABTests {
         }
 
         // Dynamic conversion
-        try checkConversion(from: original) { (src: LAB) -> LAB in
-            original
-                .convert(to: RGB.self)
-                .convert(to: CMYK.self)
-                .convert(to: XYZ.self)
-                .convert(to: HSL.self)
-                .convert(to: HSV.self)
-                .convert(to: LUV.self)
-                .convert(to: LAB.self)
-        } check: { converted, original in
+        try checkRoundTripConversion(
+            from: src,
+            withTypes: [
+                RGB.self,
+                CMYK.self,
+                XYZ.self,
+                HSL.self,
+                HSV.self,
+                LUV.self,
+            ]
+        ) { converted, original in
             try _check(converted: converted, original: original)
         }
     }

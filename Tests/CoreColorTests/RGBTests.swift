@@ -269,10 +269,10 @@ extension RGBTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
     func test_full_conversion() throws {
-        let original = Self.sRGB_f5deb3
+        let src = Self.sRGB_f5deb3
 
         // Static conversion
-        try checkConversion(from: original) { (src: RGB) -> RGB in
+        try checkRoundTripConversion(from: src) { original in
             original
                 .toXYZ()
                 .toCMYK()
@@ -286,16 +286,17 @@ extension RGBTests {
         }
 
         // Dynamic conversion
-        try checkConversion(from: original) { (src: RGB) -> RGB in
-            original
-                .convert(to: XYZ.self)
-                .convert(to: CMYK.self)
-                .convert(to: HSL.self)
-                .convert(to: HSV.self)
-                .convert(to: LUV.self)
-                .convert(to: LAB.self)
-                .convert(to: RGB.self)
-        } check: { converted, original in
+        try checkRoundTripConversion(
+            from: src,
+            withTypes: [
+                XYZ.self,
+                CMYK.self,
+                HSL.self,
+                HSV.self,
+                LUV.self,
+                LAB.self,
+            ]
+        ) { converted, original in
             try assertIsSameRGB(converted, original)
         }
     }
