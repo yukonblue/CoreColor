@@ -271,8 +271,32 @@ extension RGBTests {
     func test_full_conversion() throws {
         let original = Self.sRGB_f5deb3
 
-        let converted = original.toXYZ().toCMYK().toHSL().toHSV().toLUV().toLAB().toSRGB()
+        // Static conversion
+        try check_conversion(original) { (src: RGB) -> RGB in
+            original
+                .toXYZ()
+                .toCMYK()
+                .toHSL()
+                .toHSV()
+                .toLUV()
+                .toLAB()
+                .toSRGB()
+        } check: { converted, original in
+            try assertIsSameRGB(converted, original)
+        }
 
-        try assertIsSameRGB(converted, original)
+        // Dynamic conversion
+        try check_conversion(original) { (src: RGB) -> RGB in
+            original
+                .convert(to: XYZ.self)
+                .convert(to: CMYK.self)
+                .convert(to: HSL.self)
+                .convert(to: HSV.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: RGB.self)
+        } check: { converted, original in
+            try assertIsSameRGB(converted, original)
+        }
     }
 }

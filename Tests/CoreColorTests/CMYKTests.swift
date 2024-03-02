@@ -33,6 +33,12 @@ class CMYKTests: ColorTestCase {
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
         }
+
+        try check_conversion(cmyk) { (src: CMYK) -> RGB in
+            src.convert(to: RGB.self)
+        } check: { converted, _ in
+            try assertIsSameRGB(converted, rgb)
+        }
     }
 
     func test_CMYK_to_XYZ() throws {
@@ -118,23 +124,32 @@ extension CMYKTests {
     func test_full_conversion() throws {
         let original = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
 
-        let converted = original.toSRGB().toXYZ().toHSL().toHSV().toLUV().toLAB().toCMYK()
+        // Static conversion
+        try check_conversion(original) { (src: CMYK) -> CMYK in
+            original
+                .toSRGB()
+                .toXYZ()
+                .toHSL()
+                .toHSV()
+                .toLUV()
+                .toLAB()
+                .toCMYK()
+        } check: { converted, _ in
+            try assertIsSameCMYK(converted, original)
+        }
 
-        try assertIsSameCMYK(converted, original)
-    }
-
-    func test_full_conversion_dynamic() throws {
-        let original = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
-
-        let converted: CMYK = original
-            .convert(to: RGB.self)
-            .convert(to: XYZ.self)
-            .convert(to: HSL.self)
-            .convert(to: HSV.self)
-            .convert(to: LUV.self)
-            .convert(to: LAB.self)
-            .convert(to: CMYK.self)
-
-        try assertIsSameCMYK(converted, original)
+        // Dynamic conversion
+        try check_conversion(original) { (src: CMYK) -> CMYK in
+            original
+                .convert(to: RGB.self)
+                .convert(to: XYZ.self)
+                .convert(to: HSL.self)
+                .convert(to: HSV.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: CMYK.self)
+        } check: { converted, _ in
+            try assertIsSameCMYK(converted, original)
+        }
     }
 }

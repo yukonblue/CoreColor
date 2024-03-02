@@ -112,8 +112,32 @@ extension LUVTests {
     func test_full_conversion() throws {
         let original = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
 
-        let converted = original.toSRGB().toCMYK().toXYZ().toHSL().toHSV().toLAB().toLUV()
+        // Static conversion
+        try check_conversion(original) { (src: LUV) -> LUV in
+            original
+                .toSRGB()
+                .toCMYK()
+                .toXYZ()
+                .toHSL()
+                .toHSV()
+                .toLAB()
+                .toLUV()
+        } check: { converted, src in
+            try assertIsSameLUV(converted, original)
+        }
 
-        try assertIsSameLUV(converted, original)
+        // Dynamic conversion
+        try check_conversion(original) { (src: LUV) -> LUV in
+            original
+                .convert(to: RGB.self)
+                .convert(to: CMYK.self)
+                .convert(to: XYZ.self)
+                .convert(to: HSL.self)
+                .convert(to: HSV.self)
+                .convert(to: LAB.self)
+                .convert(to: LUV.self)
+        } check: { converted, src in
+            try assertIsSameLUV(converted, original)
+        }
     }
 }

@@ -138,8 +138,32 @@ extension XYZTests {
     func test_full_conversion() throws {
         let original = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
 
-        let converted = original.toSRGB().toCMYK().toHSL().toHSV().toLUV().toLAB().toXYZ()
+        // Static conversion
+        try check_conversion(original) { (src: XYZ) -> XYZ in
+            original
+                .toSRGB()
+                .toCMYK()
+                .toHSL()
+                .toHSV()
+                .toLUV()
+                .toLAB()
+                .toXYZ()
+        } check: { converted, original in
+            try assertIsSameXYZ(converted, original)
+        }
 
-        try assertIsSameXYZ(converted, original)
+        // Dynamic conversion
+        try check_conversion(original) { (src: XYZ) -> XYZ in
+            original
+                .convert(to: RGB.self)
+                .convert(to: CMYK.self)
+                .convert(to: HSL.self)
+                .convert(to: HSV.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: XYZ.self)
+        } check: { converted, original in
+            try assertIsSameXYZ(converted, original)
+        }
     }
 }

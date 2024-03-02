@@ -110,13 +110,41 @@ extension HSVTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
     func test_full_conversion() throws {
+        func _check(converted: HSV, original: HSV) throws {
+           XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
+           XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
+           XCTAssertEqual(converted.v, original.v, accuracy: 1e-5)
+           XCTAssertEqual(converted.alpha, original.alpha)
+        }
+
         let original = HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)
 
-        let converted = original.toSRGB().toCMYK().toXYZ().toHSL().toLUV().toLAB().toHSV()
+        // Static conversion
+        try check_conversion(original) { (src: HSV) -> HSV in
+            original
+                .toSRGB()
+                .toCMYK()
+                .toXYZ()
+                .toHSL()
+                .toLUV()
+                .toLAB()
+                .toHSV()
+        } check: { converted, converted in
+            try _check(converted: converted, original: original)
+        }
 
-        XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
-        XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
-        XCTAssertEqual(converted.v, original.v, accuracy: 1e-5)
-        XCTAssertEqual(converted.alpha, original.alpha)
+        // Dynamic conversion
+        try check_conversion(original) { (src: HSV) -> HSV in
+            original
+                .convert(to: RGB.self)
+                .convert(to: CMYK.self)
+                .convert(to: XYZ.self)
+                .convert(to: HSL.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: HSV.self)
+        } check: { converted, converted in
+            try _check(converted: converted, original: original)
+        }
     }
 }

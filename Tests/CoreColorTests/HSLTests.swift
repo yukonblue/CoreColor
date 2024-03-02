@@ -32,6 +32,12 @@ class HSLTests: ColorTestCase {
         }
 
         try check_conversion(hsl) { (src: HSL) -> RGB in
+            src.convert(to: RGB.self)
+        } check: { converted, _ in
+            try assertIsSameRGB(converted, rgb)
+        }
+
+        try check_conversion(hsl) { (src: HSL) -> RGB in
             rgb.space.convert(from: hsl)
         } check: { converted, _ in
             try assertIsSameRGB(converted, rgb)
@@ -110,13 +116,41 @@ extension HSLTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
     func test_full_conversion() throws {
+        func _check(converted: HSL, original: HSL) throws {
+            XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
+            XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
+            XCTAssertEqual(converted.l, original.l, accuracy: 1e-5)
+            XCTAssertEqual(converted.alpha, original.alpha)
+        }
+
         let original = HSL(h: 64.0, s: 0.18, l: 0.18, alpha: 1.0)
 
-        let converted = original.toSRGB().toCMYK().toXYZ().toLUV().toLAB().toHSV().toHSL()
+        // Static conversion
+        try check_conversion(original) { (src: HSL) -> HSL in
+            original
+                .toSRGB()
+                .toCMYK()
+                .toXYZ()
+                .toLUV()
+                .toLAB()
+                .toHSV()
+                .toHSL()
+        } check: { converted, _ in
+            try _check(converted: converted, original: original)
+        }
 
-        XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
-        XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
-        XCTAssertEqual(converted.l, original.l, accuracy: 1e-5)
-        XCTAssertEqual(converted.alpha, original.alpha)
+        // Dynamic conversion
+        try check_conversion(original) { (src: HSL) -> HSL in
+            original
+                .convert(to: RGB.self)
+                .convert(to: CMYK.self)
+                .convert(to: XYZ.self)
+                .convert(to: LUV.self)
+                .convert(to: LAB.self)
+                .convert(to: HSV.self)
+                .convert(to: HSL.self)
+        } check: { converted, _ in
+            try _check(converted: converted, original: original)
+        }
     }
 }
