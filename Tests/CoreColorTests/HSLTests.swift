@@ -151,7 +151,7 @@ class HSLTests: ColorTestCase {
 extension HSLTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
-    func test_full_conversion() throws {
+    func testRoundTripConversion() throws {
         func _check(converted: HSL, original: HSL) throws {
             XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
             XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
@@ -159,10 +159,10 @@ extension HSLTests {
             XCTAssertEqual(converted.alpha, original.alpha)
         }
 
-        let original = HSL(h: 64.0, s: 0.18, l: 0.18, alpha: 1.0)
+        let src = HSL(h: 64.0, s: 0.18, l: 0.18, alpha: 1.0)
 
         // Static conversion
-        try checkConversion(from: original) { (src: HSL) -> HSL in
+        try checkRoundTripConversion(from: src) { original in
             original
                 .toSRGB()
                 .toCMYK()
@@ -171,21 +171,22 @@ extension HSLTests {
                 .toLAB()
                 .toHSV()
                 .toHSL()
-        } check: { converted, _ in
+        } check: { converted, original in
             try _check(converted: converted, original: original)
         }
 
         // Dynamic conversion
-        try checkConversion(from: original) { (src: HSL) -> HSL in
-            original
-                .convert(to: RGB.self)
-                .convert(to: CMYK.self)
-                .convert(to: XYZ.self)
-                .convert(to: LUV.self)
-                .convert(to: LAB.self)
-                .convert(to: HSV.self)
-                .convert(to: HSL.self)
-        } check: { converted, _ in
+        try checkRoundTripConversion(
+            from: src,
+            withTypes: [
+                RGB.self,
+                CMYK.self,
+                XYZ.self,
+                LUV.self,
+                LAB.self,
+                HSV.self,
+            ]
+        ) { converted, original in
             try _check(converted: converted, original: original)
         }
     }

@@ -109,7 +109,7 @@ class HSVTests: ColorTestCase {
 extension HSVTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
-    func test_full_conversion() throws {
+    func testRoundTripConversion() throws {
         func _check(converted: HSV, original: HSV) throws {
            XCTAssertEqual(converted.h, original.h, accuracy: 1e-1)
            XCTAssertEqual(converted.s, original.s, accuracy: 1e-5)
@@ -117,10 +117,10 @@ extension HSVTests {
            XCTAssertEqual(converted.alpha, original.alpha)
         }
 
-        let original = HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)
+        let src = HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)
 
         // Static conversion
-        try checkConversion(from: original) { (src: HSV) -> HSV in
+        try checkRoundTripConversion(from: src) { original in
             original
                 .toSRGB()
                 .toCMYK()
@@ -129,21 +129,22 @@ extension HSVTests {
                 .toLUV()
                 .toLAB()
                 .toHSV()
-        } check: { converted, converted in
+        } check: { converted, original in
             try _check(converted: converted, original: original)
         }
 
         // Dynamic conversion
-        try checkConversion(from: original) { (src: HSV) -> HSV in
-            original
-                .convert(to: RGB.self)
-                .convert(to: CMYK.self)
-                .convert(to: XYZ.self)
-                .convert(to: HSL.self)
-                .convert(to: LUV.self)
-                .convert(to: LAB.self)
-                .convert(to: HSV.self)
-        } check: { converted, converted in
+        try checkRoundTripConversion(
+            from: src,
+            withTypes: [
+                RGB.self,
+                CMYK.self,
+                XYZ.self,
+                HSL.self,
+                LUV.self,
+                LAB.self,
+            ]
+        ) { converted, original in
             try _check(converted: converted, original: original)
         }
     }

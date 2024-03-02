@@ -135,11 +135,11 @@ class XYZTests: ColorTestCase {
 extension XYZTests {
 
     /// Tests that we can covert through all supported color spaces without above minimal precision loss.
-    func test_full_conversion() throws {
-        let original = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+    func testRoundTripConversion() throws {
+        let src = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
 
         // Static conversion
-        try checkConversion(from: original) { (src: XYZ) -> XYZ in
+        try checkRoundTripConversion(from: src) { original in
             original
                 .toSRGB()
                 .toCMYK()
@@ -153,16 +153,17 @@ extension XYZTests {
         }
 
         // Dynamic conversion
-        try checkConversion(from: original) { (src: XYZ) -> XYZ in
-            original
-                .convert(to: RGB.self)
-                .convert(to: CMYK.self)
-                .convert(to: HSL.self)
-                .convert(to: HSV.self)
-                .convert(to: LUV.self)
-                .convert(to: LAB.self)
-                .convert(to: XYZ.self)
-        } check: { converted, original in
+        try checkRoundTripConversion(
+            from: src,
+            withTypes: [
+                RGB.self,
+                CMYK.self,
+                HSL.self,
+                HSV.self,
+                LUV.self,
+                LAB.self,
+            ]
+        ) { converted, original in
             try assertIsSameXYZ(converted, original)
         }
     }
