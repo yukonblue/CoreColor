@@ -81,6 +81,15 @@ class HSLTests: ColorTestCase {
             XCTAssertEqual(luv.v, 10.31336, accuracy: 1e-4)
             XCTAssertEqual(luv.alpha, 1.0)
         }
+
+        try checkConversion(from: hsl) { (src: HSL) -> LUV in
+            src.convert(to: LUV.self)
+        } check: { luv, _ in
+            XCTAssertEqual(luv.l, 22.101345, accuracy: 1e-5)
+            XCTAssertEqual(luv.u, 0.039165918, accuracy: 1e-4)
+            XCTAssertEqual(luv.v, 10.31336, accuracy: 1e-4)
+            XCTAssertEqual(luv.alpha, 1.0)
+        }
     }
 
     func test_HSL_to_HSV() throws {
@@ -88,6 +97,15 @@ class HSLTests: ColorTestCase {
 
         try checkConversion(from: hsl) { (src: HSL) -> HSV in
             src.toHSV()
+        } check: { hsv, _ in
+            XCTAssertEqual(hsv.h, 64.0)
+            XCTAssertEqual(hsv.s, 0.31, accuracy: 1e-2)
+            XCTAssertEqual(hsv.v, 0.21, accuracy: 1e-2)
+            XCTAssertEqual(hsv.alpha, 1.0)
+        }
+
+        try checkConversion(from: hsl) { (src: HSL) -> HSV in
+            src.convert(to: HSV.self)
         } check: { hsv, _ in
             XCTAssertEqual(hsv.h, 64.0)
             XCTAssertEqual(hsv.s, 0.31, accuracy: 1e-2)
