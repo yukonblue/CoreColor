@@ -39,58 +39,71 @@ class LUVTests: ColorTestCase {
     }
 
     func test_LUV_to_RGB() throws {
-        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> RGB in
+        let luv = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
+
+        try checkConversion(from: luv) { (src: LUV) -> RGB in
             src.toSRGB()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.r.isFinite)
-            XCTAssertTrue(converted.g.isFinite)
-            XCTAssertTrue(converted.b.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { rgb, _ in
+            XCTAssertEqual(rgb.r, 0.54064256, accuracy: 1e-4)
+            XCTAssertEqual(rgb.g, 0.32525945, accuracy: 1e-4)
+            XCTAssertEqual(rgb.b, -0.5707765, accuracy: 1e-4) // TODO: This seems different from other sources.
+            XCTAssertEqual(rgb.alpha, 1.0)
         }
     }
 
     func test_LUV_to_LAB() throws {
-        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> LAB in
+        let luv = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
+
+        try checkConversion(from: luv) { (src: LUV) -> LAB in
             src.toLAB()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.a.isFinite)
-            XCTAssertTrue(converted.b.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 40.0)
+            XCTAssertEqual(lab.a, 14.573768, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, 107.28308, accuracy: 1e-4)
+            XCTAssertEqual(lab.alpha, 1.0)
         }
     }
 
     func test_LUV_to_HSV() throws {
-        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> HSV in
+        let luv = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
+
+        try checkConversion(from: luv) { (src: LUV) -> HSV in
             src.toHSV()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.h.isFinite)
-            XCTAssertTrue(converted.s.isFinite)
-            XCTAssertTrue(converted.v.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { hsv, _ in
+            // TODO: These seem different from other sources.
+            XCTAssertEqual(hsv.h, 48.372536, accuracy: 1e-4)
+            XCTAssertEqual(hsv.s, 2.0557373, accuracy: 1e-4)
+            XCTAssertEqual(hsv.v, 0.54064256, accuracy: 1e-4)
+            XCTAssertEqual(hsv.alpha, 1.0)
         }
     }
 
     func test_LUV_to_HSL() throws {
-        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> HSL in
+        let luv = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
+
+        try checkConversion(from: luv) { (src: LUV) -> HSL in
             src.toHSL()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.h.isFinite)
-            XCTAssertTrue(converted.s.isFinite)
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { hsl, _ in
+            // TODO: These seem different from other sources.
+            XCTAssertEqual(hsl.h, 48.372536, accuracy: 1e-4)
+            XCTAssertEqual(hsl.s, -36.882607, accuracy: 1e-4)
+            XCTAssertEqual(hsl.l, -0.015066981, accuracy: 1e-4)
+            XCTAssertEqual(hsl.alpha, 1.0)
         }
     }
 
     func test_LUV_to_CMYK() throws {
-        try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> CMYK in
+        let luv = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
+
+        try checkConversion(from: luv) { (src: LUV) -> CMYK in
             src.toCMYK()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.c.isFinite)
-            XCTAssertTrue(converted.m.isFinite)
-            XCTAssertTrue(converted.y.isFinite)
-            XCTAssertTrue(converted.k.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { cmyk, _ in
+            // TODO: These seem different from other sources.
+            XCTAssertEqual(cmyk.c, 0.0)
+            XCTAssertEqual(cmyk.m, 0.39838356, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.y, 2.055737, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.k, 0.45935744, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.alpha, 1.0)
         }
     }
 
