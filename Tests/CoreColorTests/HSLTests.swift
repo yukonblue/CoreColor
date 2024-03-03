@@ -55,6 +55,15 @@ class HSLTests: ColorTestCase {
             XCTAssertEqual(xyz.z, 0.023223856, accuracy: 1e-4)
             XCTAssertEqual(xyz.alpha, 1.0)
         }
+
+        try checkConversion(from: hsl) { (src: HSL) -> XYZ in
+            src.convert(to: XYZ.self)
+        } check: { xyz, _ in
+            XCTAssertEqual(xyz.x, 0.03130435, accuracy: 1e-4)
+            XCTAssertEqual(xyz.y, 0.035436176, accuracy: 1e-4)
+            XCTAssertEqual(xyz.z, 0.023223856, accuracy: 1e-4)
+            XCTAssertEqual(xyz.alpha, 1.0)
+        }
     }
 
     func test_HSL_to_LAB() throws {
@@ -62,6 +71,15 @@ class HSLTests: ColorTestCase {
 
         try checkConversion(from: hsl) { (src: HSL) -> LAB in
             src.toLAB()
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 22.101345, accuracy: 1e-4)
+            XCTAssertEqual(lab.a, -3.9567351, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, 10.23053, accuracy: 1e-4)
+            XCTAssertEqual(lab.alpha, 1.0)
+        }
+
+        try checkConversion(from: hsl) { (src: HSL) -> LAB in
+            src.convert(to: LAB.self)
         } check: { lab, _ in
             XCTAssertEqual(lab.l, 22.101345, accuracy: 1e-4)
             XCTAssertEqual(lab.a, -3.9567351, accuracy: 1e-4)
