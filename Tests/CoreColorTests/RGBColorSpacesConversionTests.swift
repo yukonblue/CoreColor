@@ -99,11 +99,7 @@ class RGBColorSpacesConversionTest: XCTestCase {
     }
 
     func assertIsSameRGB(_ a: RGB, _ b: RGB) throws {
-        assertEqual(a.r, b.r, accuracy: 1e-5)
-        assertEqual(a.g, b.g, accuracy: 1e-5)
-        assertEqual(a.b, b.b, accuracy: 1e-5)
-        assertEqual(a.alpha, b.alpha, accuracy: 1e-5)
-        // TODO: Check colorspace!
+        RGBEquality().checkEquals(lhs: a, rhs: b)
     }
 
     private func assertEqual(_ a: Float, _ b: Float, accuracy: Float = 1e-5) {
