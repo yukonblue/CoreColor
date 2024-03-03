@@ -125,12 +125,12 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_HSL() throws {
-        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSL in
+        try checkConversion(from: HSL(h: 64.8046, s: 0.5318, l: 0.9173, alpha: 0.274)) { (src: HSL) -> HSL in
             src.toHSL()
         } check: { converted, src in
-            XCTAssertEqual(converted.h, src.h, accuracy: 1e-5)
-            XCTAssertEqual(converted.s, src.s, accuracy: 1e-5)
-            XCTAssertEqual(converted.l, src.l, accuracy: 1e-5)
+            XCTAssertEqual(converted.h, src.h)
+            XCTAssertEqual(converted.s, src.s)
+            XCTAssertEqual(converted.l, src.l)
             XCTAssertEqual(converted.alpha, src.alpha)
         }
     }

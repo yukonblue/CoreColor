@@ -95,6 +95,13 @@ public struct HSL: HueColor {
     }
 }
 
+extension HSL {
+
+    public func toHSL() -> HSL {
+        HSL(h: h, s: s, l: l, alpha: alpha)
+    }
+}
+
 /// HSL color space.
 public struct HSLColorSpace: ColorSpace {
 

@@ -70,10 +70,14 @@ class XYZTests: ColorTestCase {
     }
 
     func test_XYZ_to_XYZ() throws {
-        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> XYZ in
+        let xyz = XYZ(x: 0.44716, y: 0.52736, z: 0.6271, alpha: 1.0471, space: XYZColorSpaces.XYZ65)
+
+        try checkConversion(from: xyz) { (src: XYZ) -> XYZ in
             src.toXYZ()
         } check: { converted, src in
-            try assertIsSameXYZ(converted, src)
+            XCTAssertEqual(converted.x, src.x)
+            XCTAssertEqual(converted.y, src.y)
+            XCTAssertEqual(converted.z, src.z)
         }
     }
 

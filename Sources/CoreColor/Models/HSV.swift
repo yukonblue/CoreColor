@@ -70,6 +70,13 @@ public struct HSV: HueColor {
     }
 }
 
+extension HSV {
+
+    public func toHSV() -> HSV {
+        HSV(h: h, s: s, v: v, alpha: alpha)
+    }
+}
+
 /// HSV color space.
 public struct HSVColorSpace: ColorSpace {
 

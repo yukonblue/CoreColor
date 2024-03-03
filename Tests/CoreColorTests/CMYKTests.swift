@@ -108,10 +108,15 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_CMYK() throws {
-        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> CMYK in
+        let cmyk = CMYK(c: 0.174, m: 0.9561, y: 0.3615, k: 0.2946, alpha: 0.16491)
+
+        try checkConversion(from: cmyk) { (src: CMYK) -> CMYK in
             src.toCMYK()
         } check: { converted, src in
-            CMYKEquality().checkEquals(lhs: converted, rhs: src)
+            XCTAssertEqual(converted.c, src.c)
+            XCTAssertEqual(converted.m, src.m)
+            XCTAssertEqual(converted.y, src.y)
+            XCTAssertEqual(converted.k, src.k)
         }
     }
 }

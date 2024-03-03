@@ -112,3 +112,10 @@ public struct LAB: Color {
         color.toLAB()
     }
 }
+
+extension LAB {
+
+    public func toLAB() -> LAB {
+       LAB(l: l, a: a, b: b, alpha: alpha, space: space)
+    }
+}
