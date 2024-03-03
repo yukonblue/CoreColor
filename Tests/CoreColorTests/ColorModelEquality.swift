@@ -30,6 +30,10 @@ extension ColorModelEquality {
 
 struct CMYKEquality: ColorModelEquality {
 
+    func checkEqualsExact(lhs: CMYK, rhs: CMYK) {
+        self.checkEquals(lhs: lhs, rhs: rhs, accuracy: .zero)
+    }
+
     func checkEquals(lhs: CMYK, rhs: CMYK, accuracy: Float = 1e-5) {
         assertEqual(lhs.c, rhs.c, accuracy: accuracy)
         assertEqual(lhs.m, rhs.m, accuracy: accuracy)
