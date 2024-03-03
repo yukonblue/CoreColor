@@ -98,7 +98,9 @@ class LUVTests: ColorTestCase {
         try checkConversion(from: LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)) { (src: LUV) -> LUV in
             src.toLUV()
         } check: { converted, src in
-            XCTAssertEqual(converted.l, src.l, accuracy: 1e-4) // TODO: more accuracy
+            // TODO: [Issue #14](Conversions between same color models and identical colorspace should have more accuracies if possible)
+            // https://github.com/yukonblue/CoreColor/issues/14
+            XCTAssertEqual(converted.l, src.l, accuracy: 1e-4)
             XCTAssertEqual(converted.u, src.u, accuracy: 1e-4)
             XCTAssertEqual(converted.v, src.v, accuracy: 1e-4)
             XCTAssertEqual(converted.alpha, src.alpha)
