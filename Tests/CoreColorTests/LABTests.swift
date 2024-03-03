@@ -39,62 +39,112 @@ class LABTests: ColorTestCase {
     }
 
     func test_LAB_to_RGB() throws {
-        try checkConversion(from: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> RGB in
+        let lab = LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab) { (src: LAB) -> RGB in
             src.toSRGB()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.r.isFinite)
-            XCTAssertTrue(converted.g.isFinite)
-            XCTAssertTrue(converted.b.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { lab, _ in
+            XCTAssertEqual(lab.r, 0.0)
+            XCTAssertEqual(lab.g, 0.0)
+            XCTAssertEqual(lab.b, 0.0)
+            XCTAssertEqual(lab.alpha, 1.0)
         }
     }
 
     func test_LAB_to_LUV() throws {
-        try checkConversion(from: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> LUV in
+        let lab = LAB(l: 56.0, a: -34.00, b: 79.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab) { (src: LAB) -> LUV in
             src.toLUV()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.u.isFinite)
-            XCTAssertTrue(converted.v.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { luv, _ in
+            XCTAssertEqual(luv.l, 56.0)
+            XCTAssertEqual(luv.u, -20.563555, accuracy: 1e-4)
+            XCTAssertEqual(luv.v, 73.01003, accuracy: 1e-4)
+            XCTAssertEqual(luv.alpha, 1.0)
         }
     }
 
     func test_LAB_to_HSV() throws {
-        try checkConversion(from: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> HSV in
+        let lab = LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab) { (src: LAB) -> HSV in
             src.toHSV()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
-            XCTAssertTrue(converted.v.isZero)
-            XCTAssertEqual(converted.alpha, 1.0)
+        } check: { hsv, _ in
+            XCTAssertTrue(hsv.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            XCTAssertTrue(hsv.s.isZero)
+            XCTAssertTrue(hsv.v.isZero)
+            XCTAssertEqual(hsv.alpha, 1.0)
+        }
+
+        let lab2 = LAB(l: 56.0, a: -34.00, b: 79.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab2) { (src: LAB) -> HSV in
+            src.toHSV()
+        } check: { hsv, _ in
+            // TODO: This seems different from other sources
+            XCTAssertEqual(hsv.h, 70.387695, accuracy: 1e-4)
+            XCTAssertEqual(hsv.s, 1.5948539, accuracy: 1e-4)
+            XCTAssertEqual(hsv.v, 0.5781004, accuracy: 1e-4)
+            XCTAssertEqual(hsv.alpha, 1.0)
         }
     }
 
     func test_LAB_to_HSL() throws {
-        try checkConversion(from: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> HSL in
+        let lab = LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab) { (src: LAB) -> HSL in
             src.toHSL()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
-            XCTAssertTrue(converted.s.isZero)
-            XCTAssertTrue(converted.l.isZero)
-            XCTAssertEqual(converted.alpha, 1.0)
+        } check: { hsl, _ in
+            XCTAssertTrue(hsl.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            XCTAssertTrue(hsl.s.isZero)
+            XCTAssertTrue(hsl.l.isZero)
+            XCTAssertEqual(hsl.alpha, 1.0)
+        }
+
+        let lab2 = LAB(l: 56.0, a: -34.00, b: 79.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab2) { (src: LAB) -> HSL in
+            src.toHSL()
+        } check: { hsl, _ in
+            // TODO: This seems different from other sources
+            XCTAssertEqual(hsl.h, 70.387695, accuracy: 1e-4)
+            XCTAssertEqual(hsl.s, 3.9364903, accuracy: 1e-4)
+            XCTAssertEqual(hsl.l, 0.11710757, accuracy: 1e-4)
+            XCTAssertEqual(hsl.alpha, 1.0)
         }
     }
 
     func test_LAB_to_CYMK() throws {
-        try checkConversion(from: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> CMYK in
+        let lab = LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab) { (src: LAB) -> CMYK in
             src.toCMYK()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.c.isFinite)
-            XCTAssertTrue(converted.m.isFinite)
-            XCTAssertTrue(converted.y.isFinite)
-            XCTAssertTrue(converted.k.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { cmyk, _ in
+            XCTAssertEqual(cmyk.c, 0.0)
+            XCTAssertEqual(cmyk.m, 0.0)
+            XCTAssertEqual(cmyk.y, 0.0)
+            XCTAssertEqual(cmyk.k, 1.0)
+            XCTAssertEqual(cmyk.alpha, 1.0)
+        }
+
+        let lab2 = LAB(l: 56.0, a: -34.00, b: 79.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab2) { (src: LAB) -> CMYK in
+            src.toCMYK()
+        } check: { cmyk, _ in
+            // TODO: This seems different from other sources
+            XCTAssertEqual(cmyk.c, 0.27611428, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.m, 0.0)
+            XCTAssertEqual(cmyk.y, 1.5948538, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.k, 0.42189962, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.alpha, 1.0)
         }
     }
 
     func test_LAB_to_LAB() throws {
-        try checkConversion(from: LAB(l: 18.371639, a: -18.16192, b: 91.4816, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> LAB in
+        let lab = LAB(l: 18.371639, a: -18.16192, b: 91.4816, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab) { (src: LAB) -> LAB in
             src.toLAB()
         } check: { converted, src in
             XCTAssertEqual(converted.l, src.l)
