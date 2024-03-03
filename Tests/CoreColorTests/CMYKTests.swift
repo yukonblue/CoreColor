@@ -78,7 +78,7 @@ class CMYKTests: ColorTestCase {
         try checkConversion(from: CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSV in
             src.toHSV()
         } check: { converted, _ in
-//            XCTAssertEqual(converted.h, 50.0 / 100.0)  // TODO: look into this
+            XCTAssertEqual(converted.h, 50.4)
             XCTAssertEqual(converted.s, 100.0 / 100.0)
             XCTAssertEqual(converted.v, 100.0 / 100.0)
             XCTAssertEqual(converted.alpha, 1.0)
@@ -86,10 +86,12 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_HSL() throws {
-        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSL in
+        let cmyk = CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)
+
+        try checkConversion(from: cmyk) { (src: CMYK) -> HSL in
             src.toHSL()
         } check: { converted, _ in
-//            XCTAssertEqual(converted.h, 0.0) // TODO: look into this
+            XCTAssertTrue(converted.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
             XCTAssertEqual(converted.s, 0.0)
             XCTAssertEqual(converted.l, 1.00)
             XCTAssertEqual(converted.alpha, 1.00)

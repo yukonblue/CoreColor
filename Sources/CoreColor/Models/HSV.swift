@@ -20,6 +20,8 @@ public struct HSV: HueColor {
 
     /// The 'hue' component of the model, represented in number of degrees
     /// in range of `[0.0, 360.0)`.
+    ///
+    /// Note: Monochrome colors do not have a hue, and that is represented by `NaN`.
     public let h: Float
 
     /// The 'saturation' component of the model, represented in floating-point
