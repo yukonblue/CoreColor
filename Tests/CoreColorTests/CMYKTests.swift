@@ -47,10 +47,10 @@ class CMYKTests: ColorTestCase {
         try checkConversion(from: cmyk) { (src: CMYK) -> XYZ in
             src.toXYZ()
         } check: { xyz, _ in
-            XCTAssertTrue(xyz.x.isFinite)
-            XCTAssertTrue(xyz.y.isFinite)
-            XCTAssertTrue(xyz.z.isFinite)
-            XCTAssertTrue(xyz.alpha.isFinite)
+            XCTAssertEqual(xyz.x, 0.9504561, accuracy: 1e-4)
+            XCTAssertEqual(xyz.y, 1.0000001, accuracy: 1e-4)
+            XCTAssertEqual(xyz.z, 1.0890577, accuracy: 1e-4)
+            XCTAssertEqual(xyz.alpha, 1.0)
         }
     }
 
