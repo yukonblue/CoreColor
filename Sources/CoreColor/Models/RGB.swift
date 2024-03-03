@@ -170,6 +170,7 @@ extension RGB {
 
         let h: Double = {
             if chroma < 1e-7 {
+                // Monochrome colors do not have a hue, and that is represented by `NaN`.
                 return Double.nan
             } else if rD == maxD {
                 return (gD - bD) / chroma

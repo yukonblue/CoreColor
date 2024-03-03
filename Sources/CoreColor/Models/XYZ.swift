@@ -177,3 +177,10 @@ extension XYZ {
         return LUV(l: min(l, 100.0), u: u, v: v, alpha: self.alpha, space: LUVColorSpace(whitePoint: space.whitePoint))
     }
 }
+
+extension XYZ {
+
+    public func toXYZ() -> XYZ {
+        XYZ(x: x, y: y, z: z, alpha: alpha, space: space)
+    }
+}

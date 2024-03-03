@@ -55,6 +55,13 @@ public struct CMYK: Color {
     }
 }
 
+extension CMYK {
+
+    public func toCMYK() -> CMYK {
+        CMYK(c: c, m: m, y: y, k: k, alpha: alpha)
+    }
+}
+
 /// CMYK color space.
 public struct CMYKColorSpace: ColorSpace {
 

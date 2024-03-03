@@ -64,10 +64,9 @@ class LABTests: ColorTestCase {
         try checkConversion(from: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> HSV in
             src.toHSV()
         } check: { converted, _ in
-//            XCTAssertTrue(converted.h.isFinite) // TODO: make this work
-            XCTAssertTrue(converted.s.isFinite)
-            XCTAssertTrue(converted.v.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+            XCTAssertTrue(converted.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            XCTAssertTrue(converted.v.isZero)
+            XCTAssertEqual(converted.alpha, 1.0)
         }
     }
 
@@ -75,10 +74,10 @@ class LABTests: ColorTestCase {
         try checkConversion(from: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> HSL in
             src.toHSL()
         } check: { converted, _ in
-//            XCTAssertTrue(converted.h.isFinite) // TODO: make this work
-            XCTAssertTrue(converted.s.isFinite)
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+            XCTAssertTrue(converted.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            XCTAssertTrue(converted.s.isZero)
+            XCTAssertTrue(converted.l.isZero)
+            XCTAssertEqual(converted.alpha, 1.0)
         }
     }
 
@@ -95,13 +94,13 @@ class LABTests: ColorTestCase {
     }
 
     func test_LAB_to_LAB() throws {
-        try checkConversion(from: LAB(l: 18.00, a: 18.00, b: 18.00, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> LAB in
+        try checkConversion(from: LAB(l: 18.371639, a: -18.16192, b: 91.4816, alpha: 1.0, space: LABColorSpaces.LAB65)) { (src: LAB) -> LAB in
             src.toLAB()
         } check: { converted, src in
-            XCTAssertEqual(converted.l, src.l, accuracy: 1e-5)
-            XCTAssertEqual(converted.a, src.a, accuracy: 1e-5)
-            XCTAssertEqual(converted.b, src.b, accuracy: 1e-5)
-            XCTAssertEqual(converted.alpha, src.alpha, accuracy: 1e-5)
+            XCTAssertEqual(converted.l, src.l)
+            XCTAssertEqual(converted.a, src.a)
+            XCTAssertEqual(converted.b, src.b)
+            XCTAssertEqual(converted.alpha, src.alpha)
         }
     }
 }

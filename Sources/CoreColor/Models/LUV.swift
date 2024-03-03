@@ -99,3 +99,10 @@ public struct LUV: Color {
         color.toLUV()
     }
 }
+
+extension LUV {
+
+    public func toLUV() -> LUV {
+        LUV(l: l, u: u, v: v, alpha: alpha, space: space)
+    }
+}

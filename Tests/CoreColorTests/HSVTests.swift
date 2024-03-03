@@ -95,7 +95,7 @@ class HSVTests: ColorTestCase {
     }
 
     func test_HSV_to_HSV() throws {
-        try checkConversion(from: HSV(h: 144.00, s: 0.50, v: 0.60, alpha: 1.0)) { (src: HSV) -> HSV in
+        try checkConversion(from: HSV(h: 144.17462, s: 0.50274, v: 0.67964, alpha: 0.17411)) { (src: HSV) -> HSV in
             src.toHSV()
         } check: { converted, src in
             XCTAssertEqual(converted.h, src.h)

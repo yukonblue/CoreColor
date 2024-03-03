@@ -115,17 +115,20 @@ class RGBTests: ColorTestCase {
     }
 
     func test_sRGB_to_sRGB() throws {
-        try check_RGB_to_sRGB(src: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
-                              dst: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB))
+        try check_RGB_to_RGB(src: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
+                             dst: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB))
 
-        try check_RGB_to_sRGB(src: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.sRGB),
-                              dst: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.sRGB))
+        try check_RGB_to_RGB(src: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.sRGB),
+                             dst: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.sRGB))
 
-        try check_RGB_to_sRGB(src: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.sRGB),
-                              dst: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.sRGB))
+        try check_RGB_to_RGB(src: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.sRGB),
+                             dst: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.sRGB))
 
-        try check_RGB_to_sRGB(src: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
-                              dst: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.sRGB))
+        try check_RGB_to_RGB(src: RGB(r: 0.47613, g: 0.52716, b: 0.60164, alpha: 1.0, space: RGBColorSpaces.sRGB),
+                             dst: RGB(r: 0.47613, g: 0.52716, b: 0.60164, alpha: 1.0, space: RGBColorSpaces.sRGB))
+
+        try check_RGB_to_RGB(src: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
+                             dst: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.sRGB))
     }
 
     func test_sRGB_isInSRGBGamut() throws {
@@ -138,7 +141,7 @@ class RGBTests: ColorTestCase {
         XCTAssertFalse(RGB(r: 2.00, g: 3.00, b: 4.00, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
     }
 
-    private func check_RGB_to_sRGB(src: RGB, dst: RGB) throws {
+    private func check_RGB_to_RGB(src: RGB, dst: RGB) throws {
         try checkConversion(from: src) { (src: RGB) -> RGB in
             src.toSRGB()
         } check: { converted, _ in
