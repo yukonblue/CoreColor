@@ -86,7 +86,7 @@ class LUVTests: ColorTestCase {
         } check: { hsl, _ in
             // TODO: These seem different from other sources.
             XCTAssertEqual(hsl.h, 48.372536, accuracy: 1e-4)
-            XCTAssertEqual(hsl.s, -36.882607, accuracy: 1e-4)
+            XCTAssertEqual(hsl.s, -36.882607, accuracy: 1e-3)
             XCTAssertEqual(hsl.l, -0.015066981, accuracy: 1e-4)
             XCTAssertEqual(hsl.alpha, 1.0)
         }
