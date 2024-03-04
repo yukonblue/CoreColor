@@ -45,87 +45,97 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_XYZ() throws {
-        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> XYZ in
+        let hsl = HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)
+
+        try checkConversion(from: hsl) { (src: HSL) -> XYZ in
             src.toXYZ()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.x.isFinite)
-            XCTAssertTrue(converted.y.isFinite)
-            XCTAssertTrue(converted.z.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { xyz, _ in
+            XCTAssertEqual(xyz.x, 0.03130435, accuracy: 1e-4)
+            XCTAssertEqual(xyz.y, 0.035436176, accuracy: 1e-4)
+            XCTAssertEqual(xyz.z, 0.023223856, accuracy: 1e-4)
+            XCTAssertEqual(xyz.alpha, 1.0)
         }
 
-        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> XYZ in
+        try checkConversion(from: hsl) { (src: HSL) -> XYZ in
             src.convert(to: XYZ.self)
-        } check: { converted, _ in
-            XCTAssertTrue(converted.x.isFinite)
-            XCTAssertTrue(converted.y.isFinite)
-            XCTAssertTrue(converted.z.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { xyz, _ in
+            XCTAssertEqual(xyz.x, 0.03130435, accuracy: 1e-4)
+            XCTAssertEqual(xyz.y, 0.035436176, accuracy: 1e-4)
+            XCTAssertEqual(xyz.z, 0.023223856, accuracy: 1e-4)
+            XCTAssertEqual(xyz.alpha, 1.0)
         }
     }
 
     func test_HSL_to_LAB() throws {
-        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LAB in
+        let hsl = HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)
+
+        try checkConversion(from: hsl) { (src: HSL) -> LAB in
             src.toLAB()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.a.isFinite)
-            XCTAssertTrue(converted.b.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 22.101345, accuracy: 1e-4)
+            XCTAssertEqual(lab.a, -3.9567351, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, 10.23053, accuracy: 1e-4)
+            XCTAssertEqual(lab.alpha, 1.0)
         }
 
-        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LAB in
+        try checkConversion(from: hsl) { (src: HSL) -> LAB in
             src.convert(to: LAB.self)
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.a.isFinite)
-            XCTAssertTrue(converted.b.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 22.101345, accuracy: 1e-4)
+            XCTAssertEqual(lab.a, -3.9567351, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, 10.23053, accuracy: 1e-4)
+            XCTAssertEqual(lab.alpha, 1.0)
         }
     }
 
     func test_HSL_to_LUV() throws {
-        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LUV in
+        let hsl = HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)
+
+        try checkConversion(from: hsl) { (src: HSL) -> LUV in
             src.toLUV()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.u.isFinite)
-            XCTAssertTrue(converted.v.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { luv, _ in
+            XCTAssertEqual(luv.l, 22.101345, accuracy: 1e-5)
+            XCTAssertEqual(luv.u, 0.039165918, accuracy: 1e-4)
+            XCTAssertEqual(luv.v, 10.31336, accuracy: 1e-4)
+            XCTAssertEqual(luv.alpha, 1.0)
         }
 
-        try checkConversion(from: HSL(h: 64.80, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> LUV in
+        try checkConversion(from: hsl) { (src: HSL) -> LUV in
             src.convert(to: LUV.self)
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.u.isFinite)
-            XCTAssertTrue(converted.v.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { luv, _ in
+            XCTAssertEqual(luv.l, 22.101345, accuracy: 1e-5)
+            XCTAssertEqual(luv.u, 0.039165918, accuracy: 1e-4)
+            XCTAssertEqual(luv.v, 10.31336, accuracy: 1e-4)
+            XCTAssertEqual(luv.alpha, 1.0)
         }
     }
 
     func test_HSL_to_HSV() throws {
-        try checkConversion(from: HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSV in
+        let hsl = HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)
+
+        try checkConversion(from: hsl) { (src: HSL) -> HSV in
             src.toHSV()
-        } check: { converted, _ in
-            XCTAssertEqual(converted.h, 64.0)
-            XCTAssertEqual(converted.s, 0.31, accuracy: 1e-2)
-            XCTAssertEqual(converted.v, 0.21, accuracy: 1e-2)
-            XCTAssertEqual(converted.alpha, 1.0)
+        } check: { hsv, _ in
+            XCTAssertEqual(hsv.h, 64.0)
+            XCTAssertEqual(hsv.s, 0.31, accuracy: 1e-2)
+            XCTAssertEqual(hsv.v, 0.21, accuracy: 1e-2)
+            XCTAssertEqual(hsv.alpha, 1.0)
         }
 
-        try checkConversion(from: HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> HSV in
+        try checkConversion(from: hsl) { (src: HSL) -> HSV in
             src.convert(to: HSV.self)
-        } check: { converted, _ in
-            XCTAssertEqual(converted.h, 64.0)
-            XCTAssertEqual(converted.s, 0.31, accuracy: 1e-2)
-            XCTAssertEqual(converted.v, 0.21, accuracy: 1e-2)
-            XCTAssertEqual(converted.alpha, 1.0)
+        } check: { hsv, _ in
+            XCTAssertEqual(hsv.h, 64.0)
+            XCTAssertEqual(hsv.s, 0.31, accuracy: 1e-2)
+            XCTAssertEqual(hsv.v, 0.21, accuracy: 1e-2)
+            XCTAssertEqual(hsv.alpha, 1.0)
         }
     }
 
     func test_HSL_to_HSL() throws {
-        try checkConversion(from: HSL(h: 64.8046, s: 0.5318, l: 0.9173, alpha: 0.274)) { (src: HSL) -> HSL in
+        let hsl = HSL(h: 64.8046, s: 0.5318, l: 0.9173, alpha: 0.274)
+
+        try checkConversion(from: hsl) { (src: HSL) -> HSL in
             src.toHSL()
         } check: { converted, src in
             XCTAssertEqual(converted.h, src.h)
@@ -136,14 +146,16 @@ class HSLTests: ColorTestCase {
     }
 
     func test_HSL_to_CMYK() throws {
-        try checkConversion(from: HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)) { (src: HSL) -> CMYK in
+        let hsl = HSL(h: 64, s: 0.18, l: 0.18, alpha: 1.0)
+
+        try checkConversion(from: hsl) { (src: HSL) -> CMYK in
             src.toCMYK()
-        } check: { converted, _ in
-            XCTAssertEqual(converted.c, 0.02, accuracy: 1e-3)
-            XCTAssertEqual(converted.m, 0.0, accuracy: 1e-3)
-            XCTAssertEqual(converted.y, 31.0 / 100.0, accuracy: 1e-2)
-            XCTAssertEqual(converted.k, 79.0 / 100.0, accuracy: 1e-2)
-            XCTAssertEqual(converted.alpha, 1.0)
+        } check: { cmyk, _ in
+            XCTAssertEqual(cmyk.c, 0.02, accuracy: 1e-3)
+            XCTAssertEqual(cmyk.m, 0.0, accuracy: 1e-3)
+            XCTAssertEqual(cmyk.y, 31.0 / 100.0, accuracy: 1e-2)
+            XCTAssertEqual(cmyk.k, 79.0 / 100.0, accuracy: 1e-2)
+            XCTAssertEqual(cmyk.alpha, 1.0)
         }
     }
 }

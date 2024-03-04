@@ -42,46 +42,54 @@ class CMYKTests: ColorTestCase {
     }
 
     func test_CMYK_to_XYZ() throws {
-        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> XYZ in
+        let cmyk = CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)
+
+        try checkConversion(from: cmyk) { (src: CMYK) -> XYZ in
             src.toXYZ()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.x.isFinite)
-            XCTAssertTrue(converted.y.isFinite)
-            XCTAssertTrue(converted.z.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { xyz, _ in
+            XCTAssertEqual(xyz.x, 0.9504561, accuracy: 1e-4)
+            XCTAssertEqual(xyz.y, 1.0000001, accuracy: 1e-4)
+            XCTAssertEqual(xyz.z, 1.0890577, accuracy: 1e-4)
+            XCTAssertEqual(xyz.alpha, 1.0)
         }
     }
 
     func test_CMYK_to_LAB() throws {
-        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> LAB in
+        let cmyk = CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)
+
+        try checkConversion(from: cmyk) { (src: CMYK) -> LAB in
             src.toLAB()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.a.isFinite)
-            XCTAssertTrue(converted.b.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 100.0)
+            XCTAssertEqual(lab.a, 0.0)
+            XCTAssertEqual(lab.b, 0.0)
+            XCTAssertEqual(lab.alpha, 1.0)
         }
     }
 
     func test_CMYK_to_LUV() throws {
-        try checkConversion(from: CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> LUV in
+        let cmyk = CMYK(c: 0.0, m: 0.0, y: 0.0, k: 0.0, alpha: 1.0)
+
+        try checkConversion(from: cmyk) { (src: CMYK) -> LUV in
             src.toLUV()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.u.isFinite)
-            XCTAssertTrue(converted.v.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { luv, _ in
+            XCTAssertEqual(luv.l, 100.0)
+            XCTAssertEqual(luv.u, 0.0)
+            XCTAssertEqual(luv.v, 0.0)
+            XCTAssertEqual(luv.alpha, 1.0)
         }
     }
 
     func test_CMYK_to_HSV() throws {
-        try checkConversion(from: CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSV in
+        let cmyk = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
+
+        try checkConversion(from: cmyk) { (src: CMYK) -> HSV in
             src.toHSV()
-        } check: { converted, _ in
-            XCTAssertEqual(converted.h, 50.4)
-            XCTAssertEqual(converted.s, 100.0 / 100.0)
-            XCTAssertEqual(converted.v, 100.0 / 100.0)
-            XCTAssertEqual(converted.alpha, 1.0)
+        } check: { hsv, _ in
+            XCTAssertEqual(hsv.h, 50.4)
+            XCTAssertEqual(hsv.s, 100.0 / 100.0)
+            XCTAssertEqual(hsv.v, 100.0 / 100.0)
+            XCTAssertEqual(hsv.alpha, 1.0)
         }
     }
 
@@ -90,20 +98,22 @@ class CMYKTests: ColorTestCase {
 
         try checkConversion(from: cmyk) { (src: CMYK) -> HSL in
             src.toHSL()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
-            XCTAssertEqual(converted.s, 0.0)
-            XCTAssertEqual(converted.l, 1.00)
-            XCTAssertEqual(converted.alpha, 1.00)
+        } check: { hsl, _ in
+            XCTAssertTrue(hsl.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            XCTAssertEqual(hsl.s, 0.0)
+            XCTAssertEqual(hsl.l, 1.00)
+            XCTAssertEqual(hsl.alpha, 1.00)
         }
 
-        try checkConversion(from: CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)) { (src: CMYK) -> HSL in
+        let cmyk2 = CMYK(c: 0.0, m: 16.0 / 100.0, y: 100.0 / 100.0, k: 0.0, alpha: 1.0)
+
+        try checkConversion(from: cmyk2) { (src: CMYK) -> HSL in
             src.toHSL()
-        } check: { converted, _ in
-            XCTAssertEqual(converted.h, 50.4)
-            XCTAssertEqual(converted.s, 100.0 / 100.0)
-            XCTAssertEqual(converted.l, 50.0 / 100.0)
-            XCTAssertEqual(converted.alpha, 1.00)
+        } check: { hsl, _ in
+            XCTAssertEqual(hsl.h, 50.4)
+            XCTAssertEqual(hsl.s, 100.0 / 100.0)
+            XCTAssertEqual(hsl.l, 50.0 / 100.0)
+            XCTAssertEqual(hsl.alpha, 1.00)
         }
     }
 
@@ -113,10 +123,7 @@ class CMYKTests: ColorTestCase {
         try checkConversion(from: cmyk) { (src: CMYK) -> CMYK in
             src.toCMYK()
         } check: { converted, src in
-            XCTAssertEqual(converted.c, src.c)
-            XCTAssertEqual(converted.m, src.m)
-            XCTAssertEqual(converted.y, src.y)
-            XCTAssertEqual(converted.k, src.k)
+            CMYKEquality().checkEqualsExact(lhs: converted, rhs: src)
         }
     }
 }

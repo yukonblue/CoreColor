@@ -48,24 +48,28 @@ class XYZTests: ColorTestCase {
     }
 
     func test_XYZ_to_HSV() throws {
-        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> HSV in
+        let xyz = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+
+        try checkConversion(from: xyz) { (src: XYZ) -> HSV in
             src.toHSV()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.h.isFinite)
-            XCTAssertTrue(converted.s.isFinite)
-            XCTAssertTrue(converted.v.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { hsv, _ in
+            XCTAssertEqual(hsv.h, 177.14204, accuracy: 1e-4)
+            XCTAssertEqual(hsv.s, 0.3417208, accuracy: 1e-4)
+            XCTAssertEqual(hsv.v, 0.78288233, accuracy: 1e-4)
+            XCTAssertEqual(hsv.alpha, 1.0)
         }
     }
 
     func test_XYZ_to_HSL() throws {
-        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> HSL in
+        let xyz = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+
+        try checkConversion(from: xyz) { (src: XYZ) -> HSL in
             src.toHSL()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.h.isFinite)
-            XCTAssertTrue(converted.s.isFinite)
-            XCTAssertTrue(converted.l.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { hsl, _ in
+            XCTAssertEqual(hsl.h, 177.14204, accuracy: 1e-4)
+            XCTAssertEqual(hsl.s, 0.3812218, accuracy: 1e-4)
+            XCTAssertEqual(hsl.l, 0.6491188, accuracy: 1e-4)
+            XCTAssertEqual(hsl.alpha, 1.0)
         }
     }
 
@@ -82,14 +86,16 @@ class XYZTests: ColorTestCase {
     }
 
     func test_XYZ_to_CMYK() throws {
-        try checkConversion(from: XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)) { (src: XYZ) -> CMYK in
+        let xyz = XYZ(x: 0.40, y: 0.50, z: 0.60, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+
+        try checkConversion(from: xyz) { (src: XYZ) -> CMYK in
             src.toCMYK()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.c.isFinite)
-            XCTAssertTrue(converted.m.isFinite)
-            XCTAssertTrue(converted.y.isFinite)
-            XCTAssertTrue(converted.k.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { cmyk, _ in
+            XCTAssertEqual(cmyk.c, 0.3417208, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.m, 0.0)
+            XCTAssertEqual(cmyk.y, 0.016277026, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.k, 0.21711767, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.alpha, 1.0)
         }
     }
 
