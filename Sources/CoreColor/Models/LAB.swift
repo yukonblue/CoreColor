@@ -74,6 +74,20 @@ public struct LAB: Color {
 
     public let space: LABColorSpace
 
+    public init(
+        @Clamped(range: 0.0...100.0) l: Float,
+        @Clamped(range: -100.0...100.0) a: Float,
+        @Clamped(range: -100.0...100.0) b: Float,
+        @Clamped(range: 0.0...1.0) alpha: Float,
+        space: LABColorSpace
+    ) {
+        self.l = l
+        self.a = a
+        self.b = b
+        self.alpha = alpha
+        self.space = space
+    }
+
     public func toSRGB() -> RGB {
         switch l {
         case 0.0:

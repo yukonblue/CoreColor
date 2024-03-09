@@ -59,7 +59,7 @@ class LUVTests: ColorTestCase {
         } check: { lab, _ in
             XCTAssertEqual(lab.l, 40.0)
             XCTAssertEqual(lab.a, 14.573768, accuracy: 1e-4)
-            XCTAssertEqual(lab.b, 107.28308, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, 100.0, accuracy: 1e-4)
             XCTAssertEqual(lab.alpha, 1.0)
         }
     }

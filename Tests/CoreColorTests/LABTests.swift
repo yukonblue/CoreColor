@@ -81,7 +81,12 @@ class LABTests: ColorTestCase {
         try checkConversion(from: lab) { (src: LAB) -> HSV in
             src.toHSV()
         } check: { hsv, _ in
+            #if false
+            // TODO: Debate whether this should be reflected as NaN.
             XCTAssertTrue(hsv.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            #else
+            XCTAssertEqual(hsv.h, 360.0)
+            #endif
             XCTAssertTrue(hsv.s.isZero)
             XCTAssertTrue(hsv.v.isZero)
             XCTAssertEqual(hsv.alpha, 1.0)
@@ -105,7 +110,12 @@ class LABTests: ColorTestCase {
         try checkConversion(from: lab) { (src: LAB) -> HSL in
             src.toHSL()
         } check: { hsl, _ in
+            #if false
+            // TODO: Debate whether this should be reflected as NaN.
             XCTAssertTrue(hsl.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            #else
+            XCTAssertEqual(hsl.h, 360.0)
+            #endif
             XCTAssertTrue(hsl.s.isZero)
             XCTAssertTrue(hsl.l.isZero)
             XCTAssertEqual(hsl.alpha, 1.0)

@@ -43,6 +43,20 @@ public struct CMYK: Color {
         Self.colorspace
     }
 
+    public init(
+        @Clamped(range: 0.0...1.0) c: Float,
+        @Clamped(range: 0.0...1.0) m: Float,
+        @Clamped(range: 0.0...1.0) y: Float,
+        @Clamped(range: 0.0...1.0) k: Float,
+        @Clamped(range: 0.0...1.0) alpha: Float
+    ) {
+        self.c = c
+        self.m = m
+        self.y = y
+        self.k = k
+        self.alpha = alpha
+    }
+
     public func toSRGB() -> RGB {
         let r = (1 - c) * (1 - k)
         let g = (1 - m) * (1 - k)

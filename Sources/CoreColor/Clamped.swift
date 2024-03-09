@@ -16,3 +16,14 @@ struct Clamped<V: Comparable> {
         self.wrappedValue = max(range.lowerBound, min(range.upperBound, wrappedValue))
     }
 }
+
+extension Clamped where V: FloatingPoint {
+
+    init(wrappedValue: V, range: ClosedRange<V>) {
+        guard wrappedValue != .nan && wrappedValue != .signalingNaN else {
+            self.wrappedValue = wrappedValue
+            return
+        }
+        self.wrappedValue = max(range.lowerBound, min(range.upperBound, wrappedValue))
+    }
+}
