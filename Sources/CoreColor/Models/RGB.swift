@@ -94,6 +94,10 @@ public struct RGB: Color {
         self.convert(toRGBColorSpace: RGBColorSpaces.sRGB)
     }
 
+    public func toRGB() -> RGB {
+        self.convert(toRGBColorSpace: RGBColorSpaces.LinearSRGB)
+    }
+
     public static func from(color: any Color) -> Self {
         color.toSRGB()
     }

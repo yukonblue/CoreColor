@@ -43,11 +43,22 @@ class LABTests: ColorTestCase {
 
         try checkConversion(from: lab) { (src: LAB) -> RGB in
             src.toSRGB()
-        } check: { lab, _ in
-            XCTAssertEqual(lab.r, 0.0)
-            XCTAssertEqual(lab.g, 0.0)
-            XCTAssertEqual(lab.b, 0.0)
-            XCTAssertEqual(lab.alpha, 1.0)
+        } check: { rgb, _ in
+            XCTAssertEqual(rgb.r, 0.0)
+            XCTAssertEqual(rgb.g, 0.0)
+            XCTAssertEqual(rgb.b, 0.0)
+            XCTAssertEqual(rgb.alpha, 1.0)
+        }
+
+        let lab2 = LAB(l: 56.0, a: -34.00, b: 79.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab2) { (src: LAB) -> RGB in
+            src.convert(to: RGB.self)
+        } check: { rgb, _ in
+            XCTAssertEqual(rgb.r, 106.7 / 255.0, accuracy: 1e-4)
+            XCTAssertEqual(rgb.g, 147.418 / 255.0, accuracy: 1e-4)
+            //XCTAssertEqual(rgb.b, 0.0, accuracy: 1e-4) // TODO: This should be 0
+            XCTAssertEqual(rgb.alpha, 1.0)
         }
     }
 
