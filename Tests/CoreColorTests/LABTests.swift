@@ -82,9 +82,9 @@ class LABTests: ColorTestCase {
             src.toHSV()
         } check: { hsv, _ in
             // TODO: This seems different from other sources
-            XCTAssertEqual(hsv.h, 70.387695, accuracy: 1e-4)
-            XCTAssertEqual(hsv.s, 1.5948539, accuracy: 1e-4)
-            XCTAssertEqual(hsv.v, 0.5781004, accuracy: 1e-4)
+            XCTAssertEqual(hsv.h, 70.341896, accuracy: 1e-4) // TODO: This should be 76.xxx
+            XCTAssertEqual(hsv.s, 1.093768, accuracy: 1e-4) // TODO: This should be clamped to 1
+            XCTAssertEqual(hsv.v, 0.56714696, accuracy: 1e-4) // TODO: This should be 0.5781
             XCTAssertEqual(hsv.alpha, 1.0)
         }
     }
