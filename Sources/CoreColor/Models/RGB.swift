@@ -27,7 +27,7 @@ public struct RGB: Color {
 
     public let space: RGBColorSpace
 
-    init(
+    public init(
         @Clamped(range: 0.0...1.0) r: Float,
         @Clamped(range: 0.0...1.0) g: Float,
         @Clamped(range: 0.0...1.0) b: Float,
@@ -146,7 +146,9 @@ extension RGB {
 
         let v = self.space.matrixToXyz * simd_float3(f(self.r), f(self.g), f(self.b))
 
-        return XYZ(x: v.x, y: v.y, z: v.z, alpha: self.alpha, space: XYZColorSpace(whitePoint: self.space.whitePoint))
+        let space = XYZColorSpace(whitePoint: self.space.whitePoint)
+
+        return XYZ(x: v.x, y: v.y, z: v.z, alpha: self.alpha, space: space)
     }
 
     public func toCMYK() -> CMYK {
@@ -169,7 +171,9 @@ extension RGB {
     ///
     /// Min and max are scaled to [0, 1].
     ///
-    func srgbHueMinMaxChroma<T>(_ block: (_ hue: Double, _ min: Double, _ max: Double, _ chroma: Double) -> T) -> T {
+    func srgbHueMinMaxChroma<T>(
+        _ block: (_ hue: Double, _ min: Double, _ max: Double, _ chroma: Double) -> T
+    ) -> T {
         let rD: Double = Double(self.r)
         let gD: Double = Double(self.g)
         let bD: Double = Double(self.b)

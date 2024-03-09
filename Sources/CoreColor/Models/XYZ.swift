@@ -29,18 +29,28 @@ fileprivate let CAT02_LMS_TO_XYZ = CAT02_XYZ_TO_LMS.inverse
 /// XYZ color space abstraction.
 protocol XYZColorSpaceRepresentable: WhitePointColorSpace {
 
-    func chromaticAdaptationMatrix(for srcWp: xyY, xyzToLms: matrix_float3x3, lmsToXyz: matrix_float3x3) -> matrix_float3x3
+    func chromaticAdaptationMatrix(
+        for srcWp: xyY,
+        xyzToLms: matrix_float3x3,
+        lmsToXyz: matrix_float3x3
+    ) -> matrix_float3x3
 }
 
 extension XYZColorSpaceRepresentable {
 
-    func chromaticAdaptationMatrix(for srcWp: xyY, xyzToLms: matrix_float3x3 = CAT02_XYZ_TO_LMS, lmsToXyz: matrix_float3x3 = CAT02_LMS_TO_XYZ) -> matrix_float3x3 {
+    func chromaticAdaptationMatrix(
+        for srcWp: xyY,
+        xyzToLms: matrix_float3x3 = CAT02_XYZ_TO_LMS,
+        lmsToXyz: matrix_float3x3 = CAT02_LMS_TO_XYZ
+    ) -> matrix_float3x3 {
         let dstWp = self.whitePoint.chromaticity
         
         let src = xyzToLms * simd_float3(x: srcWp.X, y: srcWp.Y, z: srcWp.Z)
         let dst = xyzToLms * simd_float3(x: dstWp.X, y: dstWp.Y, z: dstWp.Z)
 
-        return lmsToXyz * simd_float3x3(diagonal: SIMD3<Float>(dst.x / src.x, dst.y / src.y, dst.z / src.z)) * xyzToLms
+        return lmsToXyz * simd_float3x3(
+            diagonal: SIMD3<Float>(dst.x / src.x, dst.y / src.y, dst.z / src.z)
+        ) * xyzToLms
     }
 }
 
@@ -144,7 +154,11 @@ public struct XYZ: Color {
     }
 
     private func adaptToM(space: XYZColorSpace, m: matrix_float3x3, mi: matrix_float3x3) -> XYZ {
-        let transform = self.space.chromaticAdaptationMatrix(for: self.space.whitePoint.chromaticity, xyzToLms: m, lmsToXyz: mi)
+        let transform = self.space.chromaticAdaptationMatrix(
+            for: self.space.whitePoint.chromaticity,
+            xyzToLms: m,
+            lmsToXyz: mi
+        )
 
         let v = transform * simd_float3(x: self.x, y: self.y, z: self.z)
 
@@ -169,7 +183,9 @@ extension XYZ {
         let a = 500 * (fx - fy)
         let b = 200 * (fy - fz)
 
-        return LAB(l: l, a: a, b: b, alpha: self.alpha, space: LABColorSpace(whitePoint: xyzColorSpace.whitePoint))
+        let space = LABColorSpace(whitePoint: xyzColorSpace.whitePoint)
+
+        return LAB(l: l, a: a, b: b, alpha: alpha, space: space)
     }
 }
 
@@ -191,7 +207,9 @@ extension XYZ {
         let u = 13.0 * l * (uPrime - uPrimeReference)
         let v = 13.0 * l * (vPrime - vPrimeReference)
 
-        return LUV(l: min(l, 100.0), u: u, v: v, alpha: self.alpha, space: LUVColorSpace(whitePoint: space.whitePoint))
+        let space = LUVColorSpace(whitePoint: space.whitePoint)
+
+        return LUV(l: l, u: u, v: v, alpha: self.alpha, space: space)
     }
 }
 
