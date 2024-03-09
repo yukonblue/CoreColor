@@ -36,6 +36,18 @@ public struct HSV: HueColor {
     /// in range of `[0.0, 1.0]`.
     public let alpha: Float
 
+    public init(
+        @Clamped(range: 0.0...360.0) h: Float,
+        @Clamped(range: 0.0...1.0) s: Float,
+        @Clamped(range: 0.0...1.0) v: Float,
+        @Clamped(range: 0.0...1.0) alpha: Float
+    ) {
+        self.h = h
+        self.s = s
+        self.v = v
+        self.alpha = alpha
+    }
+
     public var space: HSVColorSpace {
         Self.colorspace
     }

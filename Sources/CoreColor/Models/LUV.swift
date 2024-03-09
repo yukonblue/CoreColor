@@ -66,6 +66,20 @@ public struct LUV: Color {
 
     public let space: LUVColorSpace
 
+    public init(
+        @Clamped(range: 0.0...100.0) l: Float,
+        @Clamped(range: -100.0...100.0) u: Float,
+        @Clamped(range: -100.0...100.0) v: Float,
+        @Clamped(range: 0.0...1.0) alpha: Float,
+        space: LUVColorSpace
+    ) {
+        self.l = l
+        self.u = u
+        self.v = v
+        self.alpha = alpha
+        self.space = space
+    }
+
     public func toSRGB() -> RGB {
         l == 0.0 ? RGB(r: 0.0, g: 0.0, b: 0.0, alpha: self.alpha, space: RGBColorSpaces.sRGB) : toXYZ().toSRGB()
     }

@@ -103,6 +103,23 @@ public struct XYZ: Color {
 
     public let space: XYZColorSpace
 
+    #if false
+    // TODO: Enabling this currently breaks a ton of tests. Investigate and fix.
+    public init(
+        @Clamped(range: 0.0...1.0) x: Float,
+        @Clamped(range: 0.0...1.0) y: Float,
+        @Clamped(range: 0.0...1.0) z: Float,
+        @Clamped(range: 0.0...1.0) alpha: Float,
+        space: XYZColorSpace
+    ) {
+        self.x = x
+        self.y = y
+        self.z = z
+        self.alpha = alpha
+        self.space = space
+    }
+    #endif
+
     public func toSRGB() -> RGB {
         to(rgbSpace: RGBColorSpaces.sRGB)
     }

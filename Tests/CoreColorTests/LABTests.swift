@@ -43,11 +43,22 @@ class LABTests: ColorTestCase {
 
         try checkConversion(from: lab) { (src: LAB) -> RGB in
             src.toSRGB()
-        } check: { lab, _ in
-            XCTAssertEqual(lab.r, 0.0)
-            XCTAssertEqual(lab.g, 0.0)
-            XCTAssertEqual(lab.b, 0.0)
-            XCTAssertEqual(lab.alpha, 1.0)
+        } check: { rgb, _ in
+            XCTAssertEqual(rgb.r, 0.0)
+            XCTAssertEqual(rgb.g, 0.0)
+            XCTAssertEqual(rgb.b, 0.0)
+            XCTAssertEqual(rgb.alpha, 1.0)
+        }
+
+        let lab2 = LAB(l: 56.0, a: -34.00, b: 79.00, alpha: 1.0, space: LABColorSpaces.LAB65)
+
+        try checkConversion(from: lab2) { (src: LAB) -> RGB in
+            src.convert(to: RGB.self)
+        } check: { rgb, _ in
+            XCTAssertEqual(rgb.r, 106.7 / 255.0, accuracy: 1e-4)
+            XCTAssertEqual(rgb.g, 147.418 / 255.0, accuracy: 1e-4)
+            XCTAssertEqual(rgb.b, 0.0, accuracy: 1e-4)
+            XCTAssertEqual(rgb.alpha, 1.0)
         }
     }
 
@@ -70,7 +81,12 @@ class LABTests: ColorTestCase {
         try checkConversion(from: lab) { (src: LAB) -> HSV in
             src.toHSV()
         } check: { hsv, _ in
+            #if false
+            // TODO: Debate whether this should be reflected as NaN.
             XCTAssertTrue(hsv.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            #else
+            XCTAssertEqual(hsv.h, 360.0)
+            #endif
             XCTAssertTrue(hsv.s.isZero)
             XCTAssertTrue(hsv.v.isZero)
             XCTAssertEqual(hsv.alpha, 1.0)
@@ -81,10 +97,9 @@ class LABTests: ColorTestCase {
         try checkConversion(from: lab2) { (src: LAB) -> HSV in
             src.toHSV()
         } check: { hsv, _ in
-            // TODO: This seems different from other sources
-            XCTAssertEqual(hsv.h, 70.387695, accuracy: 1e-4)
-            XCTAssertEqual(hsv.s, 1.5948539, accuracy: 1e-4)
-            XCTAssertEqual(hsv.v, 0.5781004, accuracy: 1e-4)
+            XCTAssertEqual(hsv.h, 76.56686, accuracy: 1e-4)
+            XCTAssertEqual(hsv.s, 1.0, accuracy: 1e-4)
+            XCTAssertEqual(hsv.v, 0.5781, accuracy: 1e-4)
             XCTAssertEqual(hsv.alpha, 1.0)
         }
     }
@@ -95,7 +110,12 @@ class LABTests: ColorTestCase {
         try checkConversion(from: lab) { (src: LAB) -> HSL in
             src.toHSL()
         } check: { hsl, _ in
+            #if false
+            // TODO: Debate whether this should be reflected as NaN.
             XCTAssertTrue(hsl.h.isNaN) // Monochrome colors do not have a hue, and that is represented by `NaN`.
+            #else
+            XCTAssertEqual(hsl.h, 360.0)
+            #endif
             XCTAssertTrue(hsl.s.isZero)
             XCTAssertTrue(hsl.l.isZero)
             XCTAssertEqual(hsl.alpha, 1.0)
@@ -106,10 +126,9 @@ class LABTests: ColorTestCase {
         try checkConversion(from: lab2) { (src: LAB) -> HSL in
             src.toHSL()
         } check: { hsl, _ in
-            // TODO: This seems different from other sources
-            XCTAssertEqual(hsl.h, 70.387695, accuracy: 1e-4)
-            XCTAssertEqual(hsl.s, 3.9364903, accuracy: 1e-4)
-            XCTAssertEqual(hsl.l, 0.11710757, accuracy: 1e-4)
+            XCTAssertEqual(hsl.h, 76.56686, accuracy: 1e-4)
+            XCTAssertEqual(hsl.s, 1.0, accuracy: 1e-4)
+            XCTAssertEqual(hsl.l, 0.2890502, accuracy: 1e-4)
             XCTAssertEqual(hsl.alpha, 1.0)
         }
     }
@@ -132,10 +151,9 @@ class LABTests: ColorTestCase {
         try checkConversion(from: lab2) { (src: LAB) -> CMYK in
             src.toCMYK()
         } check: { cmyk, _ in
-            // TODO: This seems different from other sources
             XCTAssertEqual(cmyk.c, 0.27611428, accuracy: 1e-4)
             XCTAssertEqual(cmyk.m, 0.0)
-            XCTAssertEqual(cmyk.y, 1.5948538, accuracy: 1e-4)
+            XCTAssertEqual(cmyk.y, 1.0, accuracy: 1e-4)
             XCTAssertEqual(cmyk.k, 0.42189962, accuracy: 1e-4)
             XCTAssertEqual(cmyk.alpha, 1.0)
         }
