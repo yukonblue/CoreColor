@@ -135,10 +135,10 @@ class RGBTests: ColorTestCase {
         XCTAssertTrue(RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
         XCTAssertTrue(RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
         XCTAssertTrue(RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
-        XCTAssertFalse(RGB(r: 1.01, g: 1.00, b: 1.000, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
-        XCTAssertFalse(RGB(r: 1.00, g: 1.01, b: 1.000, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
-        XCTAssertFalse(RGB(r: 1.00, g: 1.00, b: 1.001, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
-        XCTAssertFalse(RGB(r: 2.00, g: 3.00, b: 4.00, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
+        XCTAssertTrue(RGB(r: 1.01, g: 1.00, b: 1.000, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
+        XCTAssertTrue(RGB(r: 1.00, g: 1.01, b: 1.000, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
+        XCTAssertTrue(RGB(r: 1.00, g: 1.00, b: 1.001, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
+        XCTAssertTrue(RGB(r: 2.00, g: 3.00, b: 4.00, alpha: 1.0, space: RGBColorSpaces.sRGB).isInSRGBGamut)
     }
 
     private func check_RGB_to_RGB(src: RGB, dst: RGB) throws {

@@ -27,7 +27,13 @@ public struct RGB: Color {
 
     public let space: RGBColorSpace
 
-    init(r: Float, g: Float, b: Float, alpha: Float, space: RGBColorSpace) {
+    init(
+        @Clamped(range: 0.0...1.0) r: Float,
+        @Clamped(range: 0.0...1.0) g: Float,
+        @Clamped(range: 0.0...1.0) b: Float,
+        @Clamped(range: 0.0...1.0) alpha: Float,
+        space: RGBColorSpace
+    ) {
         self.r = r
         self.g = g
         self.b = b
