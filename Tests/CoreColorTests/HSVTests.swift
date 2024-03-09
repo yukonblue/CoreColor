@@ -43,11 +43,11 @@ class HSVTests: ColorTestCase {
 
         try checkConversion(from: hsv) { (src: HSV) -> XYZ in
             src.toXYZ()
-        } check: { converted, _ in
-            XCTAssertTrue(converted.x.isFinite)
-            XCTAssertTrue(converted.y.isFinite)
-            XCTAssertTrue(converted.z.isFinite)
-            XCTAssertTrue(converted.alpha.isFinite)
+        } check: { xyz, _ in
+            XCTAssertEqual(xyz.x, 0.1706987, accuracy: 1e-4)
+            XCTAssertEqual(xyz.y, 0.2540235, accuracy: 1e-4)
+            XCTAssertEqual(xyz.z, 0.17941634, accuracy: 1e-4)
+            XCTAssertEqual(xyz.alpha, 1.0)
         }
     }
 
