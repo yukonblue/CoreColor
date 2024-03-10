@@ -119,6 +119,8 @@ class RGBTests: ColorTestCase {
                              xyz: XYZ(x: 0.95045593, y: 1.0, z: 1.08905775, alpha: 1.0, space: XYZColorSpaces.XYZ65))
     }
 
+    /// Reference calculator:
+    /// https://davengrace.com/cgi-bin/cspace.pl
     func test_LinearSRGB_to_XYZ() throws {
         try check_RGB_to_XYZ(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
                              xyz: XYZ(x: 0.00, y: 0.00, z: 0.00, alpha: 1.0, space: XYZColorSpaces.XYZ65))
