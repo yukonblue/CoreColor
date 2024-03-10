@@ -177,6 +177,7 @@ extension XYZ {
     }
 
     public func toLAB() -> LAB {
+        /// http://www.brucelindbloom.com/index.html?Math.html
         func f(_ t: Float) -> Float {
             t > CIE_E ? (cbrt(t)) : ((t * CIE_K + 16) / 116)
         }
