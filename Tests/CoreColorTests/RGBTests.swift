@@ -33,7 +33,51 @@ class RGBTests: ColorTestCase {
         XCTAssertEqual(rgb.blueInt, expected.b)
     }
 
-    func test_RGB_to_HSV() throws {
+    /// Reference calculator:
+    /// https://davengrace.com/cgi-bin/cspace.pl
+    func test_sRGB_to_LinearSRGB() throws {
+        try checkConversion(from: RGB(r: 0.0, g: 0.0, b: 0.0, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> RGB in
+            src.toLinearSRGB()
+        } check: { converted, _ in
+            XCTAssertEqual(converted.r, 0.0)
+            XCTAssertEqual(converted.g, 0.0)
+            XCTAssertEqual(converted.b, 0.0)
+            XCTAssertEqual(converted.alpha, 1.0)
+            XCTAssertEqual(converted.space.name, RGBColorSpaces.LinearSRGB.name)
+        }
+
+        try checkConversion(from: RGB(r: 0.18, g: 0.35, b: 0.89, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> RGB in
+            src.toLinearSRGB()
+        } check: { converted, _ in
+            XCTAssertEqual(converted.r, 0.027211785, accuracy: 1e-4)
+            XCTAssertEqual(converted.g, 0.10048152, accuracy: 1e-4)
+            XCTAssertEqual(converted.b, 0.7677688, accuracy: 1e-4)
+            XCTAssertEqual(converted.alpha, 1.0)
+            XCTAssertEqual(converted.space.name, RGBColorSpaces.LinearSRGB.name)
+        }
+
+        try checkConversion(from: RGB(r: 0.96, g: 0.83, b: 0.97, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> RGB in
+            src.toLinearSRGB()
+        } check: { converted, _ in
+            XCTAssertEqual(converted.r, 0.91140765, accuracy: 1e-4)
+            XCTAssertEqual(converted.g, 0.65593076, accuracy: 1e-4)
+            XCTAssertEqual(converted.b, 0.9331069, accuracy: 1e-4)
+            XCTAssertEqual(converted.alpha, 1.0)
+            XCTAssertEqual(converted.space.name, RGBColorSpaces.LinearSRGB.name)
+        }
+
+        try checkConversion(from: RGB(r: 1.0, g: 1.0, b: 1.0, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> RGB in
+            src.toLinearSRGB()
+        } check: { converted, _ in
+            XCTAssertEqual(converted.r, 1.0)
+            XCTAssertEqual(converted.g, 1.0)
+            XCTAssertEqual(converted.b, 1.0)
+            XCTAssertEqual(converted.alpha, 1.0)
+            XCTAssertEqual(converted.space.name, RGBColorSpaces.LinearSRGB.name)
+        }
+    }
+
+    func test_sRGB_to_HSV() throws {
         try check_RGB_to_HSV(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
                              hsv: HSV(h: Float.nan, s: 0.00, v: 0.00, alpha: 1.0))
 
@@ -47,7 +91,7 @@ class RGBTests: ColorTestCase {
                              hsv: HSV(h: Float.nan, s: 0.00, v: 1.00, alpha: 1.0))
     }
 
-    func test_RGB_to_HSL() throws {
+    func test_sRGB_to_HSL() throws {
         try check_RGB_to_HSL(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
                              hsl: HSL(h: Float.nan, s: 0.00, l: 0.00, alpha: 1.0))
 
@@ -61,7 +105,7 @@ class RGBTests: ColorTestCase {
                              hsl: HSL(h: Float.nan, s: 0.00, l: 1.00, alpha: 1.0))
     }
 
-    func test_RGB_to_XYZ() throws {
+    func test_sRGB_to_XYZ() throws {
         try check_RGB_to_XYZ(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
                              xyz: XYZ(x: 0.00, y: 0.00, z: 0.00, alpha: 1.0, space: XYZColorSpaces.XYZ65))
 
@@ -75,7 +119,21 @@ class RGBTests: ColorTestCase {
                              xyz: XYZ(x: 0.95045593, y: 1.0, z: 1.08905775, alpha: 1.0, space: XYZColorSpaces.XYZ65))
     }
 
-    func test_RGB_to_CMYK() throws {
+    func test_LinearSRGB_to_XYZ() throws {
+        try check_RGB_to_XYZ(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.00, y: 0.00, z: 0.00, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+
+        try check_RGB_to_XYZ(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.1710821, y: 0.18000002, z: 0.1960304, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+
+        try check_RGB_to_XYZ(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.45203704, y: 0.4859554, z: 0.637649, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+
+        try check_RGB_to_XYZ(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.95045593, y: 1.0, z: 1.08905775, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+    }
+
+    func test_sRGB_to_CMYK() throws {
         try check_RGB_to_CMYK(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
                               cmyk: CMYK(c: 0.00, m: 0.00, y: 0.00, k: 1.00, alpha: 1.00))
 
@@ -89,7 +147,7 @@ class RGBTests: ColorTestCase {
                               cmyk: CMYK(c: 0.00, m: 0.00, y: 0.00, k: 0.00, alpha: 1.00))
     }
 
-    func test_RGB_to_LUV() throws {
+    func test_sRGB_to_LUV() throws {
         try check_RGB_to_LUV(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
                              luv: LUV(l: 0.00, u: 0.00, v: 0.00, alpha: 1.00, space: LUVColorSpaces.LUV65))
 
@@ -103,7 +161,7 @@ class RGBTests: ColorTestCase {
                              luv: LUV(l: 100.00, u: 0.00, v: 0.00, alpha: 1.00, space: LUVColorSpaces.LUV65))
     }
 
-    func test_RGB_to_LAB() throws {
+    func test_sRGB_to_LAB() throws {
         try checkConversion(from: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> LAB in
             src.toLAB()
         } check: { converted, _ in

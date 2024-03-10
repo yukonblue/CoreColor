@@ -96,20 +96,20 @@ public struct RGB: Color {
         Int(alpha * 255)
     }
 
-    public func toSRGB() -> RGB {
-        self.convert(toRGBColorSpace: RGBColorSpaces.sRGB)
-    }
-
-    public func toRGB() -> RGB {
-        self.convert(toRGBColorSpace: RGBColorSpaces.LinearSRGB)
-    }
-
     public static func from(color: any Color) -> Self {
         color.toSRGB()
     }
 }
 
 extension RGB {
+
+    public func toSRGB() -> RGB {
+        self.convert(toRGBColorSpace: RGBColorSpaces.sRGB)
+    }
+
+    public func toLinearSRGB() -> RGB {
+        self.convert(toRGBColorSpace: RGBColorSpaces.LinearSRGB)
+    }
 
     public func toHSL() -> HSL {
         srgbHueMinMaxChroma { (h, mn, mx, chroma) -> HSL in

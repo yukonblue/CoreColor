@@ -168,6 +168,14 @@ public struct XYZ: Color {
 
 extension XYZ {
 
+    public func sRGB() -> RGB {
+        to(rgbSpace: RGBColorSpaces.sRGB)
+    }
+
+    public func toLinearSRGB() -> RGB {
+        to(rgbSpace: RGBColorSpaces.LinearSRGB)
+    }
+
     public func toLAB() -> LAB {
         func f(_ t: Float) -> Float {
             t > CIE_E ? (cbrt(t)) : ((t * CIE_K + 16) / 116)
