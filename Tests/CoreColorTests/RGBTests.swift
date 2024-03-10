@@ -34,7 +34,7 @@ class RGBTests: ColorTestCase {
     }
 
     /// Reference calculator:
-    /// https://davengrace.com/cgi-bin/cspace.pl
+    /// https://davengrace.com/dave/cspace/
     func test_sRGB_to_LinearSRGB() throws {
         try checkConversion(from: RGB(r: 0.0, g: 0.0, b: 0.0, alpha: 1.0, space: RGBColorSpaces.sRGB)) { (src: RGB) -> RGB in
             src.toLinearSRGB()
@@ -120,7 +120,7 @@ class RGBTests: ColorTestCase {
     }
 
     /// Reference calculator:
-    /// https://davengrace.com/cgi-bin/cspace.pl
+    /// https://davengrace.com/dave/cspace/
     func test_LinearSRGB_to_XYZ() throws {
         try check_RGB_to_XYZ(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
                              xyz: XYZ(x: 0.00, y: 0.00, z: 0.00, alpha: 1.0, space: XYZColorSpaces.XYZ65))
