@@ -119,22 +119,6 @@ class RGBTests: ColorTestCase {
                              xyz: XYZ(x: 0.95045593, y: 1.0, z: 1.08905775, alpha: 1.0, space: XYZColorSpaces.XYZ65))
     }
 
-    /// Reference calculator:
-    /// https://davengrace.com/dave/cspace/
-    func test_LinearSRGB_to_XYZ() throws {
-        try check_RGB_to_XYZ(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
-                             xyz: XYZ(x: 0.00, y: 0.00, z: 0.00, alpha: 1.0, space: XYZColorSpaces.XYZ65))
-
-        try check_RGB_to_XYZ(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
-                             xyz: XYZ(x: 0.1710821, y: 0.18000002, z: 0.1960304, alpha: 1.0, space: XYZColorSpaces.XYZ65))
-
-        try check_RGB_to_XYZ(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
-                             xyz: XYZ(x: 0.45203704, y: 0.4859554, z: 0.637649, alpha: 1.0, space: XYZColorSpaces.XYZ65))
-
-        try check_RGB_to_XYZ(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
-                             xyz: XYZ(x: 0.95045593, y: 1.0, z: 1.08905775, alpha: 1.0, space: XYZColorSpaces.XYZ65))
-    }
-
     func test_sRGB_to_CMYK() throws {
         try check_RGB_to_CMYK(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.sRGB),
                               cmyk: CMYK(c: 0.00, m: 0.00, y: 0.00, k: 1.00, alpha: 1.00))
@@ -284,6 +268,20 @@ class RGBTests: ColorTestCase {
             try assertIsSameCMYK(converted, cmyk)
         }
     }
+
+    private func check_RGB_to_LAB(rgb: RGB, lab: LAB) throws {
+        try checkConversion(from: rgb) { (src: RGB) -> LAB in
+            src.toLAB()
+        } check: { converted, _ in
+            try assertIsSameLAB(converted, lab)
+        }
+
+        try checkConversion(from: rgb) { (src: RGB) -> LAB in
+            lab.space.convert(from: rgb)
+        } check: { converted, _ in
+            try assertIsSameLAB(converted, lab)
+        }
+    }
 }
 
 /// test cases from https://www.w3.org/TR/css-color-5/#colorcontrast
@@ -362,5 +360,98 @@ extension RGBTests {
         ) { converted, original in
             try assertIsSameRGB(converted, original)
         }
+    }
+}
+
+// MARK: Linear sRGB conversion tests
+
+/// Reference calculator:
+/// https://davengrace.com/dave/cspace/
+extension RGBTests {
+
+    func test_LinearSRGB_to_XYZ() throws {
+        try check_RGB_to_XYZ(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.00, y: 0.00, z: 0.00, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+
+        try check_RGB_to_XYZ(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.1710821, y: 0.18000002, z: 0.1960304, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+
+        try check_RGB_to_XYZ(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.45203704, y: 0.4859554, z: 0.637649, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+
+        try check_RGB_to_XYZ(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             xyz: XYZ(x: 0.95045593, y: 1.0, z: 1.08905775, alpha: 1.0, space: XYZColorSpaces.XYZ65))
+    }
+
+    func test_LinearSRGB_to_HSV() throws {
+        try check_RGB_to_HSV(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsv: HSV(h: Float.nan, s: 0.00, v: 0.00, alpha: 1.0))
+
+        try check_RGB_to_HSV(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsv: HSV(h: Float.nan, s: 0.00, v: 0.18, alpha: 1.0))
+
+        try check_RGB_to_HSV(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsv: HSV(h: 210.0, s: 0.33333333, v: 0.6, alpha: 1.0))
+
+        try check_RGB_to_HSV(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsv: HSV(h: Float.nan, s: 0.00, v: 1.00, alpha: 1.0))
+    }
+
+    func test_LinearSRGB_to_HSL() throws {
+        try check_RGB_to_HSL(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsl: HSL(h: Float.nan, s: 0.00, l: 0.00, alpha: 1.0))
+
+        try check_RGB_to_HSL(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsl: HSL(h: Float.nan, s: 0.00, l: 0.18, alpha: 1.0))
+
+        try check_RGB_to_HSL(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsl: HSL(h: 210.0, s: 0.20, l: 0.50, alpha: 1.0))
+
+        try check_RGB_to_HSL(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             hsl: HSL(h: Float.nan, s: 0.00, l: 1.00, alpha: 1.0))
+    }
+
+    func test_LinearSRGB_to_CMYK() throws {
+        try check_RGB_to_CMYK(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                              cmyk: CMYK(c: 0.00, m: 0.00, y: 0.00, k: 1.00, alpha: 1.00))
+
+        try check_RGB_to_CMYK(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                              cmyk: CMYK(c: 0.00, m: 0.00, y: 0.00, k: 0.82, alpha: 1.00))
+
+        try check_RGB_to_CMYK(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                              cmyk: CMYK(c: 0.33333333, m: 0.16666667, y: 0.0, k: 0.4, alpha: 1.00))
+
+        try check_RGB_to_CMYK(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                              cmyk: CMYK(c: 0.00, m: 0.00, y: 0.00, k: 0.00, alpha: 1.00))
+    }
+
+    /// Reference calculator:
+    /// https://www.colorspaceconverter.com/converter/srgb-linear-to-luv
+    func test_LinearSRGB_to_LUV() throws {
+        try check_RGB_to_LUV(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             luv: LUV(l: 0.00, u: 0.00, v: 0.00, alpha: 1.00, space: LUVColorSpaces.LUV65))
+
+        try check_RGB_to_LUV(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             luv: LUV(l: 49.49611, u: 0.00, v: 0.00, alpha: 1.00, space: LUVColorSpaces.LUV65))
+
+        try check_RGB_to_LUV(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             luv: LUV(l: 75.19901, u: -10.304651, v: -14.957002, alpha: 1.00, space: LUVColorSpaces.LUV65))
+
+        try check_RGB_to_LUV(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             luv: LUV(l: 100.00, u: 0.00, v: 0.00, alpha: 1.00, space: LUVColorSpaces.LUV65))
+    }
+
+    func test_LinearSRGB_to_LAB() throws {
+        try check_RGB_to_LAB(rgb: RGB(r: 0.00, g: 0.00, b: 0.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             lab: LAB(l: 0.00, a: 0.00, b: 0.00, alpha: 1.00, space: LABColorSpaces.LAB65))
+
+        try check_RGB_to_LAB(rgb: RGB(r: 0.18, g: 0.18, b: 0.18, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             lab: LAB(l: 49.49611, a: 0.00, b: 0.00, alpha: 1.00, space: LABColorSpaces.LAB65))
+
+        try check_RGB_to_LAB(rgb: RGB(r: 0.40, g: 0.50, b: 0.60, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             lab: LAB(l: 75.19901, a: -2.8122663, b: -10.077393, alpha: 1.00, space: LABColorSpaces.LAB65))
+
+        try check_RGB_to_LAB(rgb: RGB(r: 1.00, g: 1.00, b: 1.00, alpha: 1.0, space: RGBColorSpaces.LinearSRGB),
+                             lab: LAB(l: 100.00, a: 0.00, b: 0.00, alpha: 1.00, space: LABColorSpaces.LAB65))
     }
 }
