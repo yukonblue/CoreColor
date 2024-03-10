@@ -24,9 +24,54 @@ class XYZTests: ColorTestCase {
                              rgb: RGB(r: 1.08523261, g: 0.97691161, b: 0.95870753, alpha: 1.0, space: RGBColorSpaces.sRGB))
     }
 
-    func test_XYZ_to_LAB() throws {
+    /// Reference calculator:
+    /// https://www.mathworks.com/help/images/ref/xyz2lab.html
+    func test_XYZ50_to_LAB50() throws {
         try check_XYZ_to_LAB(xyz: XYZ(x: 0.25, y: 0.50, z: 0.75, alpha: 1.0, space: XYZColorSpaces.XYZ50),
                              lab: LAB(l: 76.06926101, a: -78.02949711, b: -34.99756832, alpha: 1.0, space: LABColorSpaces.LAB50))
+
+        try check_XYZ_to_LAB(xyz: XYZ(x: 0.13, y: 0.94, z: 0.68, alpha: 1.0, space: XYZColorSpaces.XYZ50),
+                             lab: LAB(l: 97.63199, a: -100.0, b: 8.404839, alpha: 1.0, space: LABColorSpaces.LAB50))
+
+        try check_XYZ_to_LAB(xyz: XYZ(x: 1.0, y: 1.0, z: 1.0, alpha: 1.0, space: XYZColorSpaces.XYZ50),
+                             lab: LAB(l: 100.0, a: 6.0964227, b: -13.235903, alpha: 1.0, space: LABColorSpaces.LAB50))
+    }
+
+    /// Reference calculator:
+    /// https://www.mathworks.com/help/images/ref/xyz2lab.html
+    func test_XYZ65_to_LAB65() throws {
+        try checkConversion(
+            from: XYZ(x: 0.0, y: 0.0, z: 0.0, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+        ) { (src: XYZ) -> LAB in
+            src.toLAB()
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 0.0, accuracy: 1e-4)
+            XCTAssertEqual(lab.a, 0.0, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, 0.0, accuracy: 1e-4)
+            XCTAssertEqual(lab.alpha, 1.0)
+        }
+
+        try checkConversion(
+            from: XYZ(x: 0.25, y: 0.50, z: 0.75, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+        ) { (src: XYZ) -> LAB in
+            src.toLAB()
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 76.06926, accuracy: 1e-4)
+            XCTAssertEqual(lab.a, -76.48948, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, -17.877281, accuracy: 1e-4)
+            XCTAssertEqual(lab.alpha, 1.0)
+        }
+
+        try checkConversion(
+            from: XYZ(x: 1.0, y: 1.0, z: 1.0, alpha: 1.0, space: XYZColorSpaces.XYZ65)
+        ) { (src: XYZ) -> LAB in
+            src.toLAB()
+        } check: { lab, _ in
+            XCTAssertEqual(lab.l, 100.0, accuracy: 1e-4)
+            XCTAssertEqual(lab.a, 8.541048, accuracy: 1e-4)
+            XCTAssertEqual(lab.b, 5.6074142, accuracy: 1e-4)
+            XCTAssertEqual(lab.alpha, 1.0)
+        }
     }
 
     func test_XYZ_to_LUV() throws {

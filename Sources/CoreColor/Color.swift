@@ -18,8 +18,11 @@ public protocol Color {
     /// Retrieves the associated color space of the model.
     var space: AssociatedColorSpace { get }
 
-    /// Converts to the equivalent RGB color model in sRGB color space.
+    /// Converts to the equivalent RGB color model in sRGB (``RGBColorSpaces.sRGB``) color space.
     func toSRGB() -> RGB
+
+    /// Converts to the equivalent RGB color model in Linear sRGB  (``RGBColorSpaces.LinearSRGB``) color space.
+    func toLinearSRGB() -> RGB
 
     /// Converts to the equivalent HSL color model.
     func toHSL() -> HSL
@@ -47,6 +50,10 @@ public protocol Color {
 }
 
 extension Color {
+
+    public func toLinearSRGB() -> RGB {
+        self.toSRGB().toLinearSRGB()
+    }
 
     public func toHSL() -> HSL {
         self.toSRGB().toHSL()

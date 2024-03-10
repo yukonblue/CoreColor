@@ -64,13 +64,14 @@ class LUVTests: ColorTestCase {
         }
     }
 
+    /// Reference calculator:
+    /// https://calculatorax.com/en/luv-to-hsv
     func test_LUV_to_HSV() throws {
         let luv = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
 
         try checkConversion(from: luv) { (src: LUV) -> HSV in
             src.toHSV()
         } check: { hsv, _ in
-            // TODO: Validate these.
             XCTAssertEqual(hsv.h, 36.096985, accuracy: 1e-4)
             XCTAssertEqual(hsv.s, 1.0, accuracy: 1e-4)
             XCTAssertEqual(hsv.v, 0.54064256, accuracy: 1e-4)
@@ -78,13 +79,14 @@ class LUVTests: ColorTestCase {
         }
     }
 
+    /// Reference calculator:
+    /// https://calculatorax.com/en/luv-to-hsl
     func test_LUV_to_HSL() throws {
         let luv = LUV(l: 40.00, u: 50.0, v: 60.0, alpha: 1.0, space: LUVColorSpaces.LUV65)
 
         try checkConversion(from: luv) { (src: LUV) -> HSL in
             src.toHSL()
         } check: { hsl, _ in
-            // TODO: These seem different from other sources.
             XCTAssertEqual(hsl.h, 36.096985, accuracy: 1e-4)
             XCTAssertEqual(hsl.s, 1.0, accuracy: 1e-3)
             XCTAssertEqual(hsl.l, 0.27032128, accuracy: 1e-4)
@@ -98,7 +100,6 @@ class LUVTests: ColorTestCase {
         try checkConversion(from: luv) { (src: LUV) -> CMYK in
             src.toCMYK()
         } check: { cmyk, _ in
-            // TODO: Validate these.
             XCTAssertEqual(cmyk.c, 0.0)
             XCTAssertEqual(cmyk.m, 0.39838356, accuracy: 1e-4)
             XCTAssertEqual(cmyk.y, 1.0, accuracy: 1e-4)
